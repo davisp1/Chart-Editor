@@ -1,7 +1,19 @@
 $(function() {
     oStorage  = new editor.MyStorage();
+    json_data  = oStorage.getItem("json_data");
     editor.update_data();
-
+    
+    $(Object.keys(json_data)).each(function(){
+        if($("#pieLabel option").length===0){
+            var titles = json_data[this].titles;
+            var option1 = $("<option/>").attr("value",titles[0]).text(titles[0]);
+            var option2 = $("<option/>").attr("value",titles[1]).text(titles[1]);
+            $("#pieLabel").append(option1);
+            $("#pieNumber").append(option2);
+        }
+        var option = $("<option/>").attr("value",this).text(this);
+        $("#pieSource").append(option);
+    });
     /** TABS **/
     $(".menu li").click(editor.onClickTab);
     
@@ -11,7 +23,29 @@ $(function() {
 
     /** Load **/
     $("#menu_data li.item").click(editor.onClickData);
-    
+    $("#menu_charts li").click(editor.onClickChart);
+    $("#pieSource").change(function(event){
+        var source = $(this).val();
+        $("#pieLabel option,#pieNumber option").remove();
+        var titles = json_data[source].titles;
+        $(titles).each(function(){
+            var option = $("<option/>").attr("value",this).text(this);
+            $("#pieLabel,#pieNumber").append(option);
+        });
+        $("#pieLabel").val($("#pieLabel option:eq(0)").attr("value"));
+        $("#pieNumber").val($("#pieNumber option:eq(1)").attr("value"));
+    });
+
+    $(".computeChart").click(function(event){
+        event.preventDefault();
+        var container = $(".preview_chart").get(0);
+        var source = $("#pieSource").val();
+        var data = json_data[source].data;
+        var config = {};
+        config["radius"] = $("#pieRadius").val();
+        config["out_radius"] = $("#pieOutRadius").val();
+        editor.Pie(container,data,config);
+    });
     /** Save **/
     $(".new_data button").click(editor.onSaveData);
 });
@@ -55,13 +89,19 @@ var editor = {
             });
         }
     },
+    
+    computePieForm : function(){
+        var $container = $(".container_pie");
+        
+    },
 
     onSaveData : function(event) {
         event.preventDefault();
+        var titles = $(".new_data thead input").map( function(i,element) { return $(element).val() } );
         var record = {
             data : jQuery.parseJSON($("#dataTextarea").val()),
             title : $("#dataTitle").val(),
-            titles : [],
+            titles : titles,
         }
         
         editor.save_data(record);
@@ -88,6 +128,15 @@ var editor = {
         $("#"+rel).addClass("active");
     },
     
+    onClickChart : function(event) {
+        event.preventDefault();
+        var rel = $(this).attr("rel");
+        $(this).parent().find("li").removeClass("active");
+        $(this).addClass("active"); 
+        $(".main>div").hide();
+        $("."+rel).show();
+    },
+
     update_data : function () {
         var json_data  = oStorage.getItem("json_data");
         $(Object.keys(json_data)).each(function() {
@@ -110,6 +159,43 @@ var editor = {
         oStorage.setItem("json_data",json_data);
     },
 
+    Pie : function(container, data, config) {
+        console.log(data);
+        var container = d3.select(container);
+        console.log("totot");
+        var titles =  Array.map(data,function(t){return t[0]})
+        console.log("titlllllles");
+        console.log(config);
+        var radius = +config.radius, padding = 10;
+        var color = d3.scale.ordinal()
+                .range(["grey", "#3366CC", "#FF0000", "#FF9900","#109618", "#990099", "#0099C6", "#FFFF00",])
+                .domain(titles);
+
+        var arc = d3.svg.arc()
+                .outerRadius(radius)
+                .innerRadius(+config.out_radius);
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) { console.log(d); return d[1]; });
+
+        var svg = container.append("svg")
+                                  .data([data])
+                                  .attr("class", "pie")
+                                  .attr("width", radius * 2.1)
+                                  .attr("height", radius * 2.85)
+                                .append("g")
+                                  .attr("transform", "translate(" + (radius+4) + "," + (radius+4) + ")");
+
+        var arcs = svg.selectAll(".arc")
+                                    .data(pie)
+                                    .enter()
+                                  .append("path")
+                                    .attr("class", "arc")
+                                    .attr("d", arc)
+                                    .style("fill", function(d) { return color(d.value)})
+    },
+    
     MyStorage : function () {
         try{
             this.storage=window.localStorage;
