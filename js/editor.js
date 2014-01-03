@@ -14,8 +14,13 @@ $(function() {
         var option = $("<option/>").attr("value",this).text(this);
         $("#pieSource").append(option);
     });
+
+    editor.Tab($(".tabs.menu"));
+    editor.Tab($(".container_pie"));
+    editor.Tab($(".new_data"));
+
     /** TABS **/
-    $(".menu li").click(editor.onClickTab);
+    //$(".menu li").click(editor.onClickTab);
     
     /** 
      *  DATA
@@ -24,7 +29,7 @@ $(function() {
     /** Load **/
     $("#menu_data li.item").click(editor.onClickData);
     $("#menu_charts li").click(editor.onClickChart);
-    $(".container_pie .nav-tabs li").click(editor.onClickTabPie);
+    //$(".container_pie .nav-tabs li").click(editor.onClickTabPie);
     $("#pieSource").change(function(event){
         var source = $(this).val();
         $("#pieLabel option,#pieNumber option").remove();
@@ -46,6 +51,7 @@ $(function() {
         config.label = +$("#pieLabel").val();
         config.value = +$("#pieNumber").val();
         config.radius = $("#pieRadius").val();
+        config.title = $("#pieTitle").val();
         config.out_radius = $("#pieOutRadius").val();
         editor.Pie(container,data,config);
     });
@@ -58,6 +64,26 @@ var editor = {
      * CLASS MyStorage
      *
      **/
+
+    Tab : function(target){
+        
+        var object = $(target);
+        var container =  $(".content", object);
+        var header = $(".header", object);
+
+        var onClickTab = function(event) {
+            var rel = $(this).attr("rel");
+            $(this).parent().find("li").removeClass("active");
+            $(this).addClass("active"); 
+            $(container).children().hide();
+            $("#"+rel).show();
+        }
+
+        $("li", header).click(onClickTab);
+        $("li:first",header).click();
+
+    },      
+
     computeTable : function(rel) {
         $("#dataTextarea,#dataTitle").val("");
         $(".new_data table tbody tr,.new_data table th").remove();
@@ -123,23 +149,6 @@ var editor = {
         editor.computeTable(rel);
     },
 
-    onClickTab : function(event) {
-        var rel = $(this).attr("rel");
-        $(this).parent().find("li").removeClass("active");
-        $(this).addClass("active"); 
-        $(".menu_content>.active").removeClass("active");
-        $("#"+rel).addClass("active");
-    },
-
-    onClickTabPie : function(event) {
-        var rel = $(this).attr("rel");
-        console.log("zefzffz");
-        $(this).parent().find("li").removeClass("active");
-        $(this).addClass("active"); 
-        $(".tab_containers>div").hide();;
-        $("."+rel).show();
-    },
-
     onClickChart : function(event) {
         event.preventDefault();
         var rel = $(this).attr("rel");
@@ -203,6 +212,10 @@ var editor = {
                                     .attr("class", "arc")
                                     .attr("d", arc)
                                     .style("fill", function(d) { return color(d.data[config.label])})
+        svg.append("text")
+                  .attr("dy", radius + 20)
+                  .style("text-anchor", "middle")
+                  .text(config.title);
     },
     
     MyStorage : function () {

@@ -10,53 +10,80 @@
 </head>
 <body>
 <div class="container">
+
+
     <div class="row">
-        <div class="menu_container col-xs-3">
-            <h2>Chart Editor <small>using D3</small></h2>
-	    <ul class="nav nav-tabs menu">
-	      <li class="active" rel="menu_charts"><a href="#">Charts</a></li>
-	      <li rel="menu_data"><a href="#">Data</a></li>
-	    </ul>
-	    <div class="menu_content">
-		    <div id="menu_charts" class="active">
+      <div class="menu_container col-xs-3">
+
+        <h2>Chart Editor <small>using D3</small></h2>
+
+        <div class="tabs menu">
+          <ul class="nav nav-tabs header">
+    	      <li rel="menu_charts"><a href="#">Charts</a></li>
+    	      <li rel="menu_data"><a href="#">Data</a></li>
+          </ul>
+
+    	    <div class="content">
+    		    
+            <div id="menu_charts" class="active">
                 <ul class="nav nav-pills nav-stacked">
                     <li class="active" rel="container_pie"><a href="#">Pie</a></li>
                     <li rel="container_bar"><a href="#">Bars</a></li>
                 </ul>	
-		    </div>
+    		    </div>
+
             <div id="menu_data">
                 <ul class="sources nav nav-pills nav-stacked"></ul>
             </div>
-	    </div>
-
+  	    
+          </div>
         </div>
-        <div class="main col-xs-9">
-            <div class="new_data">
-                <form role="form">
-                  <div class="form-group" style="height:auto">
-                    <label for="dataTextarea">JSON</label>
-                    <textarea class="form-control" rows="15" id="dataTextarea" placeholder="Enter JSON"></textarea>
-                    <p class="help-block">Example block-level help text here.</p>
-                  </div>
-                  <div class="form-group" style="height:auto">
-                    <label for="dataTitle">Title</label>
-                    <input type="text" class="form-control" id="dataTitle" placeholder="Enter Title"></input>
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-                <table class="table">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
+      </div>
+
+      <div class="main col-xs-9">
+        <div class="new_data">
+          <ul class="nav nav-tabs header">
+            <li class="active" rel="new_data_table"><a href="#">Table</a></li>
+            <li rel="new_data_json"><a href="#">Data</a></li>
+          </ul>
+          <div class="content">
+              
+            <div id="new_data_json">
+              <form role="form">
+                <div class="form-group" style="height:auto">
+                  <label for="dataTextarea">JSON</label>
+                  <textarea class="form-control" rows="15" id="dataTextarea" placeholder="Enter JSON"></textarea>
+                  <p class="help-block">Example block-level help text here.</p>
+                </div>
+                <div class="form-group" style="height:auto">
+                  <label for="dataTitle">Title</label>
+                  <input type="text" class="form-control" id="dataTitle" placeholder="Enter Title"></input>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form>
             </div>
+
+            <div id="new_data_table">
+              <table class="table">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          
+          </div>
+        </div>
+
+
+
+
             <div class="container_pie">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs header">
                   <li class="active" rel="menu_main"><a href="#">Main</a></li>
                   <li rel="menu_source"><a href="#">Source</a></li>
                   <li rel="menu_radius"><a href="#">Radius</a></li>
                 </ul>
-                <div class="tab_containers">
-                <div class="menu_main">
+                <div class="content">
+                <div id="menu_main">
                 
                 <form role="form">
                   <div class="form-group" style="height:auto">
@@ -73,7 +100,7 @@
                 
                 </div>
                 
-                <div class="menu_source clearfix">
+                <div id="menu_source" class="clearfix">
                 
                     <form role="form">
                       <fieldset class="fieldset">
@@ -99,7 +126,7 @@
                 
                 </div>
                 
-                <div class="menu_radius">
+                <div id="menu_radius">
                     <form role="form">
                       <fieldset class="fieldset">
                           <legend>Radius</legend>

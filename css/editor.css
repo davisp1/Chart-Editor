@@ -29,6 +29,16 @@
     padding: 10px;
 }
 
+.content{
+    padding:2%;
+}
+
+.table thead input{
+    font-size: 16px;
+    margin:3px;
+    font-weight: bold;
+    padding:2px;
+}
 /**
 .container>.row{
     position:relative;
