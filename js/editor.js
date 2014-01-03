@@ -28,8 +28,8 @@ $(function() {
         var source = $(this).val();
         $("#pieLabel option,#pieNumber option").remove();
         var titles = json_data[source].titles;
-        $(titles).each(function(){
-            var option = $("<option/>").attr("value",this).text(this);
+        $.each(titles,function(i,element){
+            var option = $("<option/>").attr("value",i).text(this);
             $("#pieLabel,#pieNumber").append(option);
         });
         $("#pieLabel").val($("#pieLabel option:eq(0)").attr("value"));
@@ -42,8 +42,10 @@ $(function() {
         var source = $("#pieSource").val();
         var data = json_data[source].data;
         var config = {};
-        config["radius"] = $("#pieRadius").val();
-        config["out_radius"] = $("#pieOutRadius").val();
+        config.label = +$("#pieLabel").val();
+        config.value = +$("#pieNumber").val();
+        config.radius = $("#pieRadius").val();
+        config.out_radius = $("#pieOutRadius").val();
         editor.Pie(container,data,config);
     });
     /** Save **/
@@ -163,7 +165,7 @@ var editor = {
         console.log(data);
         var container = d3.select(container);
         console.log("totot");
-        var titles =  Array.map(data,function(t){return t[0]})
+        var titles =  Array.map(data,function(t){return t[config.label]})
         console.log("titlllllles");
         console.log(config);
         var radius = +config.radius, padding = 10;
@@ -177,7 +179,7 @@ var editor = {
 
         var pie = d3.layout.pie()
                 .sort(null)
-                .value(function(d) { console.log(d); return d[1]; });
+                .value(function(d) { return d[+config.value]; });
 
         var svg = container.append("svg")
                                   .data([data])
@@ -193,7 +195,7 @@ var editor = {
                                   .append("path")
                                     .attr("class", "arc")
                                     .attr("d", arc)
-                                    .style("fill", function(d) { return color(d.value)})
+                                    .style("fill", function(d) { return color(d.data[config.label])})
     },
     
     MyStorage : function () {
