@@ -8,8 +8,12 @@
     position: absolute;
 
 }
+.tab_containers>div{
+    display:none;
+}
 .container{
     width:100%;
+    padding-top:20px;
 }
 .main{
     position:absolute;
@@ -19,6 +23,12 @@
     position:relative;
     height:100%;
 }
+
+.fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
 /**
 .container>.row{
     position:relative;

@@ -24,6 +24,7 @@ $(function() {
     /** Load **/
     $("#menu_data li.item").click(editor.onClickData);
     $("#menu_charts li").click(editor.onClickChart);
+    $(".container_pie .nav-tabs li").click(editor.onClickTabPie);
     $("#pieSource").change(function(event){
         var source = $(this).val();
         $("#pieLabel option,#pieNumber option").remove();
@@ -129,7 +130,16 @@ var editor = {
         $(".menu_content>.active").removeClass("active");
         $("#"+rel).addClass("active");
     },
-    
+
+    onClickTabPie : function(event) {
+        var rel = $(this).attr("rel");
+        console.log("zefzffz");
+        $(this).parent().find("li").removeClass("active");
+        $(this).addClass("active"); 
+        $(".tab_containers>div").hide();;
+        $("."+rel).show();
+    },
+
     onClickChart : function(event) {
         event.preventDefault();
         var rel = $(this).attr("rel");
@@ -144,7 +154,7 @@ var editor = {
         $(Object.keys(json_data)).each(function() {
                 $(".sources").append("<li class='item' rel='"+this+"'><a href='#'>"+this+"</a></li>");
         });
-        $(".sources").append("<li class='item' rel='new'><a href='#'>new</a></li>");
+        $(".sources").append("<li class='item' rel='new'><a href='#'>New</a></li>");
     },
     
     save_data : function(record){
@@ -162,12 +172,9 @@ var editor = {
     },
 
     Pie : function(container, data, config) {
-        console.log(data);
+
         var container = d3.select(container);
-        console.log("totot");
         var titles =  Array.map(data,function(t){return t[config.label]})
-        console.log("titlllllles");
-        console.log(config);
         var radius = +config.radius, padding = 10;
         var color = d3.scale.ordinal()
                 .range(["grey", "#3366CC", "#FF0000", "#FF9900","#109618", "#990099", "#0099C6", "#FFFF00",])
