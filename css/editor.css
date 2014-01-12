@@ -39,6 +39,10 @@
     font-weight: bold;
     padding:2px;
 }
+
+.preview_chart{
+    padding:50px;
+}
 /**
 .container>.row{
     position:relative;
