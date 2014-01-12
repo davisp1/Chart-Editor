@@ -102,28 +102,13 @@ var editor = {
             var title = record.title;
             
             $("#dataTextarea").val(JSON.stringify(data, null, "\t"));
-            var text = "";
-            for (var i = 0; i < data.length; i++) {
-                var record = data[i];
-                var line = "";
-                for (var j = 0; j < record.length; j++) {
-                    var value = record[j]
-                    if(j==0){
-                        line = value;
-                    }
-                    else{
-                        line = line + "\t" + value;
-                    }
-                };
-                if(i==0){
-                    text = line
-                }
-                else{
-                    text = text + "\n" + line
-
-                }
-            };
+            
+            var lines = data.map(function(element){
+                                return element.join("\t");
+                            })
+            var text = lines.join("\n");
             $("#dataCopy").val(text); //.val().split("\n").map(function(d){ return d.split("\t") })
+            
             $("#dataCsv").val("");
             $("#dataTitle").val(title);
             
@@ -136,14 +121,16 @@ var editor = {
                 $(".table thead").append("<th><input type='text' value='" + text + "' placeHoldzer='column" + i + "'/></th>");
             }
             
+            var trs = [];
             $.each(data, function(){
                 var tr = $("<tr/>");
                 $.each(this,function(){
                     td = $("<td/>").text(this);
                     tr.append(td);
                 });
-                $(".table tbody").append(tr);
+                trs.push(tr);
             });
+            $(".table tbody").append(trs);
         }
     },
 
