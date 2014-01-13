@@ -7,6 +7,8 @@
     <script src="js/editor.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/editor.css" />
+    <script src="js/jquery.handsontable.full.js"></script>
+    <link rel="stylesheet" media="screen" href="css/jquery.handsontable.full.css">
 </head>
 <body>
 <div class="container">
@@ -44,81 +46,54 @@
         <div class="new_data">
           <ul class="nav nav-tabs header">
             <li class="active" rel="new_data_table"><a href="#">Table</a></li>
-            <li rel="new_data_json"><a href="#">Data</a></li>
+            <li rel="new_data_json"><a href="#">Source</a></li>
           </ul>
           <div class="content">
               
             <div id="new_data_json">
               <form role="form">
-                <div class="panel-group" id="accordion">
+                <h3>data</h3>
+                <div class="panel-group" id="new_data">
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                          JSON
-                        </a>
-                      </h4>
+                        <input type="radio" name="source_type" value="json" checked> JSON
+                        <input type="radio" name="source_type" value="csv"> Csv
+                        <input type="radio" name="source_type" value="copy"> Copy/Paste
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
                       <div class="panel-body">
-                        <div class="form-group" style="height:auto">
+
+                        <div class="form-group json" style="height:auto">
                           <label for="dataTextarea">JSON</label>
                           <textarea class="form-control" rows="15" id="dataTextarea" placeholder="Enter JSON"></textarea>
                           <p class="help-block">Example block-level help text here.</p>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                          Csv
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <div class="form-group" style="height:auto">
+
+                        <div class="form-group csv" style="height:auto">
                           <label for="dataCsv">Csv</label>
                           <input type="file" id="dataCsv"></input>
-                          <p class="help-block">Upload your own file.</p>
+                          <p class="help-block">Upload your csv file.</p>
+                          <input type="checkbox" id="isdataCopy"/> first line is title?
+                          <p class="help-block">First line can represent keys<./p>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                          Copy/Paste
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <div class="form-group" style="height:auto">
+
+                        <div class="form-group copy" style="height:auto">
                           <label for="dataCopy">Csv</label>
                           <textarea class="form-control" rows="15" id="dataCopy" placeholder="Copy/Paste you table"></textarea>
-                        </div>
-                      </div>
+                        </div>                
+
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group" style="height:auto">
-                  <label for="dataTitle">Title</label>
+                  <h3>Title</h3>
                   <input type="text" class="form-control" id="dataTitle" placeholder="Enter Title"></input>
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
               </form>
             </div>
 
-            <div id="new_data_table">
-              <table class="table">
-                <thead></thead>
-                <tbody></tbody>
-              </table>
+            <div id="new_data_table" style="width:100%;overflow:visible;height:auto;">
             </div>
           
           </div>

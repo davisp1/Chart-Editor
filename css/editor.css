@@ -43,6 +43,34 @@
 .preview_chart{
     padding:50px;
 }
+
+.handsontable table{
+    width:30% !important;
+}
+
+h3{
+text-transform: uppercase;
+font-weight: 600;
+font-size: 13px;
+letter-spacing: 1px;
+margin: 20px 0px;
+margin-top: 30px;
+border-bottom: 1px solid #ddd;
+padding: 10px 0px;
+padding-bottom: 0px;
+text-shadow: 0px 1px #fff;
+color: #999;
+}
+
+input[type="radio"]{
+    margin-left: 10px;
+}
+
+textarea.form-control{
+    border-left:3px solid #4E6CA3 !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 /**
 .container>.row{
     position:relative;

@@ -19,7 +19,7 @@ $(function() {
 
     editor.Tab($(".tabs.menu"));
     editor.Tab($(".container_pie"));
-    editor.Tab($(".new_data"));
+    editor.Tab($(".new_data"),function(element){ if( $(element).attr("rel")==="new_data_json"){ $("#new_data input:radio:first").click() } });
 
     /** TABS **/
     //$(".menu li").click(editor.onClickTab);
@@ -42,6 +42,11 @@ $(function() {
         });
         $("#pieLabel").val($("#pieLabel option:eq(0)").attr("value"));
         $("#pieNumber").val($("#pieNumber option:eq(1)").attr("value"));
+    });
+
+    $("#new_data input:radio").click(function(event) {
+        $("#new_data .form-group").hide();
+        $("#new_data .form-group." + $(this).val()).show();
     });
 
     $(".computeChart").click(function(event){
@@ -80,7 +85,7 @@ var editor = {
             $(container).children().hide().find("li").removeClass('active');
             $("#"+rel).show();
             if(additional) {
-                additional();
+                additional(this);
             }
         }
 
@@ -90,9 +95,28 @@ var editor = {
     },      
 
     computeTable : function(rel) {
+
+
+        var getData = (function () {
+
+          return function () {
+            var page  = parseInt(window.location.hash.replace('#', ''), 10) || 1
+              , limit = 6
+              , row   = (page - 1) * limit
+              , count = page * limit
+              , part  = [];
+
+            for(;row < count;row++) {
+              part.push(data[row]);
+            }
+
+            return part;
+          }
+        })();
+
         $("#dataTextarea,#dataTitle").val("");
         $(".new_data table tbody tr,.new_data table th").remove();
-
+        $('.dragdealer.vertical').hide(); //hides the vertical scroll bar
         if (rel!=="new") {
             var json_data = oStorage.getItem("json_data");
             var record = json_data[rel];
@@ -112,7 +136,7 @@ var editor = {
             $("#dataCsv").val("");
             $("#dataTitle").val(title);
             
-            var length_column = data[0].length;
+            /**var length_column = data[0].length;
             for(var i=0;i<length_column;i++){
                 var text = "column"+i;
                 if((i+1) <= titles.length){
@@ -131,6 +155,18 @@ var editor = {
                 trs.push(tr);
             });
             $(".table tbody").append(trs);
+            **/
+            var table = $('#new_data_table').data("handsontable");
+            if(table)
+                table.destroy();
+            $('#new_data_table').handsontable({ 
+                data : data,
+                  rowHeaders: true,
+                  colHeaders: true,
+                  minSpareRows: 1,
+                  stretchH: 'all',
+            });
+            //$('#new_data_table table').addClass('table');
         }
     },
 
@@ -141,52 +177,63 @@ var editor = {
             titles = titles.map( function(i,element) { return $(element).val() } );
         else
             titles = [];
-        var data_container = $(".panel-collapse.in");
-        var input = data_container.find("input");
-        var textarea = data_container.find("textarea");
-        var value = [];
-        if(input.length>0){
-            var file = input.get(0).files[0];
-            console.log(file);
-                if(typeof file != "undefined"){
-                    var reader = new FileReader();
-                    reader.onload = function(e) { 
-                        var result = e.target.result;
-                        value = d3.csv.parseRows(result.replace(/\s*;/g, ","));
-                        var record = {
-                            data : value,
-                            title : $("#dataTitle").val(),
-                            titles : titles,
-                        }
-                        editor.save_data(record);
-                    }; 
-                    reader.readAsText(file);
-                    //
-                    return false;
-                }
-                else{
-                    alert("error");
-                    return false
-                }
+        var container_class = $("#new_data input:radio:checked").val();
+        var container = $("#new_data ." + container_class);
 
-        }
-        else{
-            if($("#dataTextarea").val()!=""){
-                value = jQuery.parseJSON($("#dataTextarea").val());
+        var title = $("#dataTitle").val();
+        var value = [];
+
+
+        var record = {
+            data : [],
+            title : title,
+            titles : titles,
+        };
+
+        if(container_class === "json") {
+            try {
+                value = jQuery.parseJSON(container.find("textarea").val());
             }
-            else{
-                alert("error t");
+            catch(e){
+                alert("error " + e);
                 return false;
             }
-            console.log(value);
-            var record = {
-                data : value,
-                title : $("#dataTitle").val(),
-                titles : titles,
-            }
-            console.log(record);
-            editor.save_data(record);
         }
+        else if(container_class === "csv") {
+            var input = container.find("input:file");
+            var file = input.get(0).files[0];
+            var hasTitles = $("#isdataCopy").is(":checked");
+            if (typeof file !== "undefined") {
+                var reader = new FileReader();
+                reader.onload = function(e) { 
+                    var result = e.target.result;
+                    var data = d3.csv.parseRows(result.replace(/\s*;/g, ","));
+                    console.log(hasTitles);
+                    console.log(data);
+                    if (hasTitles === true) {
+                        record.titles = data[0];
+                        record.data = data.splice(1);
+                    }
+                    else {
+                        record.data = data;
+                    }
+                    console.log(record);
+                    editor.save_data(record);
+                }; 
+                reader.readAsText(file);
+                return false;
+            }
+            else{
+                alert("error");
+                return false
+            }
+        }
+        else{
+            return false;
+        }
+        console.log(value);
+        record.value = value;
+        editor.save_data(record);
         //window.location.reload();
     },
     
@@ -214,7 +261,7 @@ var editor = {
         var json_data  = oStorage.getItem("json_data");
         if((typeof json_data !== "undefined") && (json_data!=null)){
             $(Object.keys(json_data)).each(function() {
-                    $(".sources").append("<li class='item' rel='"+this+"'><a href='#'>"+this+"</a></li>");
+                    $(".sources").append("<li class='item' rel='"+this+"'><a href='#'>"+this+"</a><span class='glyphicon glyphicon-remove'></span></li>");
             });
         }
         $(".sources").append("<li class='item' rel='new'><a href='#'>New</a></li>");
