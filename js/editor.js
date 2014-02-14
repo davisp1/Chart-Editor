@@ -101,13 +101,14 @@ var editor = {
 
           return function () {
             var page  = parseInt(window.location.hash.replace('#', ''), 10) || 1
-              , limit = 6
+              , limit = 30
               , row   = (page - 1) * limit
               , count = page * limit
               , part  = [];
 
             for(;row < count;row++) {
-              part.push(data[row]);
+              if(row<data.length)
+                part.push(data[row]);
             }
 
             return part;
@@ -127,45 +128,23 @@ var editor = {
             
             $("#dataTextarea").val(JSON.stringify(data, null, "\t"));
             
-            var lines = data.map(function(element){
-                                return element.join("\t");
-                            })
+            var lines = data.map(function(element){ return element.join("\t"); })
             var text = lines.join("\n");
             $("#dataCopy").val(text); //.val().split("\n").map(function(d){ return d.split("\t") })
             
             $("#dataCsv").val("");
             $("#dataTitle").val(title);
-            
-            /**var length_column = data[0].length;
-            for(var i=0;i<length_column;i++){
-                var text = "column"+i;
-                if((i+1) <= titles.length){
-                    text = titles[i];
-                }
-                $(".table thead").append("<th><input type='text' value='" + text + "' placeHoldzer='column" + i + "'/></th>");
-            }
-            
-            var trs = [];
-            $.each(data, function(){
-                var tr = $("<tr/>");
-                $.each(this,function(){
-                    td = $("<td/>").text(this);
-                    tr.append(td);
-                });
-                trs.push(tr);
-            });
-            $(".table tbody").append(trs);
-            **/
+            $("#new_data_table table").remove()
             var table = $('#new_data_table').data("handsontable");
             if(table)
                 table.destroy();
             $('#new_data_table').handsontable({ 
-                data : data,
+                data : getData(),
                   rowHeaders: true,
                   colHeaders: true,
-                  minSpareRows: 1,
-                  stretchH: 'all',
-            });
+                  minRows: 0,
+            })
+            $("#new_data_table").append("<div>testesttestest</div>");
             //$('#new_data_table table').addClass('table');
         }
     },
