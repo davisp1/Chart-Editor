@@ -10,7 +10,9 @@
     "angular-resource": "1.2.6",
     "angular-cookies": "1.2.6",
     "angular-sanitize": "1.2.6",
-    "angular-route": "1.2.6"
+    "angular-route": "1.2.6",
+    "angular-charts": "0.0.1",
+    "angular-boostrap-ui": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",
