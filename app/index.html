@@ -18,15 +18,50 @@
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
   </head>
   <body ng-app="newChartEditorApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <div class="header">
+      <ul class="nav nav-pills pull-right">
+        <li class="active"><a ng-href="#">Home</a></li>
+        <li><a ng-href="#">{{test}}About</a></li>
+        <li><a ng-href="#">Contact</a></li>
+      </ul>
+      <h3 class="text-muted">new_chart_editor</h3>
+    </div>
+    
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container">
+        <div class="row">
+          <div class="menu_container col-xs-3" ng-controller="MenuCtrl">
 
+            <h2>Chart Editor <small>using D3</small></h2>
+            <tabset class="menu">
+              <tab heading="DataSet">
+                <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
+                    <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}"><a href="#/dataset/edit/{{dataset.id}}">{{dataset.title}}</a></li>
+                </ul> 
+                <button class="btn btn-default btn-sm" ng-click="">Create</button>
+              </tab>
+              <tab heading="Charts">
+                <tabset vertical="true" type="navType">
+                  <tab heading="Chart"></tab>
+                  <tab heading="Bars"></tab>
+                </tabset>
+              </tab>
+            </tabset>
+          </div>
+          <div class="main col-xs-9" ng-view=""></div>
+        </div>
+    </div>
+
+    <div class="footer">
+      <p>♥ D3/p>
+    </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -55,12 +90,15 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/angular-charts/dist/angular-charts.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/dataset.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/menu.js"></script>
         <!-- endbuild -->
 </body>
 </html>
