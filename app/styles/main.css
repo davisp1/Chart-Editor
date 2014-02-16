@@ -3,7 +3,35 @@ body {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+.menu>.tab-content{
+    padding-top: 30px;
+    border: 1px solid #dddddd;
+    padding: 10px;
+    min-height: 600px;
+    height:100%;
+    border-top: none;
+}
+.tab-content .btn{
+  margin-top:10px;
+}
 
+.menu_container{
+      background: #F7F7F9;
+      padding:10px;
+
+}
+.menu_container h2{
+  text-align: center;
+}
+.header{
+  margin-bottom: 0 !important;
+}
+.main{
+  margin-top:10px;
+}
+.container{
+  width:100%;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
