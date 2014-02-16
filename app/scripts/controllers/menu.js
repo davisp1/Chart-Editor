@@ -16,7 +16,7 @@ angular.module('newChartEditorApp')
     $scope.navType = 'pills';
 
     $scope.isActive = function (viewLocation) {
-    	console.log( $rootScope.currentDataset)
+        console.log( $rootScope.currentDataset);
         return $rootScope.currentDataset === viewLocation;
       };
 

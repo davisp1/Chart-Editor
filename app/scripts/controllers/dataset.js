@@ -16,6 +16,6 @@ datasetControllers.controller('DataSetCreateCtrl', ['$scope', '$routeParams', '$
 
 datasetControllers.controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope',
    function($scope, $routeParams, $rootScope) {
-    $rootScope.currentDataset = $routeParams.datasetId;;
+    $rootScope.currentDataset = $routeParams.datasetId;
     $scope.datasetId = $routeParams.datasetId;
   }]);
