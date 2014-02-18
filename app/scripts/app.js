@@ -5,8 +5,10 @@ angular.module('newChartEditorApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'DataSetControllers',
-  'ui.bootstrap'
+  'ngStorage',
+  'ui.bootstrap',
+  'angularFileUpload',
+  'ngTable'
 ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -16,7 +18,7 @@ angular.module('newChartEditorApp', [
       })
       .when('/dataset/create', {
         templateUrl: 'views/dataset_details.html',
-        controller: 'DataSetCreateCtrl'
+        controller: 'DataSetEditCtrl'
       })
       .when('/dataset/edit/:datasetId', {
         templateUrl: 'views/dataset_details.html',
