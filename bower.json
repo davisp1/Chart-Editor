@@ -13,7 +13,9 @@
     "angular-route": "1.2.6",
     "angular-charts": "0.0.1",
     "angular-bootstrap": "0.10.0",
-    "ngstorage": "0.3.0"
+    "ngstorage": "0.3.0",
+    "ng-file-upload": "",
+    "ng-table":"*"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",
