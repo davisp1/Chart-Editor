@@ -13,6 +13,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -43,9 +44,9 @@
             <tabset class="menu">
               <tab heading="DataSet">
                 <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
-                    <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}"><a href="#/dataset/edit/{{dataset.id}}">{{dataset.title}}</a></li>
+                    <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}"><a href="#/dataset/edit/{{dataset.id||dataset.title}}">{{dataset.title||dataset.id}}</a></li>
                 </ul> 
-                <button class="btn btn-default btn-sm" ng-click="">Create</button>
+                <button class="btn btn-default btn-sm" ng-click="goNext('/dataset/create')"> Create </a></button>
               </tab>
               <tab heading="Charts">
                 <tabset vertical="true" type="navType">
@@ -60,7 +61,7 @@
     </div>
 
     <div class="footer">
-      <p>♥ D3/p>
+      <p>♥ D3</p>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -91,6 +92,9 @@
     <script src="bower_components/angular-charts/dist/angular-charts.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/ng-table/ng-table.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

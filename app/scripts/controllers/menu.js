@@ -1,18 +1,15 @@
 'use strict';
 
 angular.module('newChartEditorApp')
-  .controller('MenuCtrl', function ($scope,$rootScope) {
+  .controller('MenuCtrl', function ($scope,$rootScope,$localStorage,$location) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 
-    $scope.datasets = [
-      { title : 'data1', id : 'data1' },
-      { title : 'data2', id : 'data2' }
-    ];
-
+    $scope.datasets = $localStorage.datasets;
+    console.log($scope.datasets);
     $scope.navType = 'pills';
 
     $scope.isActive = function (viewLocation) {
@@ -25,4 +22,8 @@ angular.module('newChartEditorApp')
       };
 
     $rootScope.currentDataset = '';
+
+    $scope.goNext = function (hash) {
+        $location.path(hash);
+      };
   });
