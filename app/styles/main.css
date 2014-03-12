@@ -105,3 +105,18 @@ body {
     border-bottom: 0;
   }
 }
+
+.ng-table {
+    border: 1px solid #000;
+}
+
+.ng-table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 5px solid #dddddd;
+    font-size:1.2em;
+}
+
+.ng-table > thead .btn {
+    font-weight:bold;
+    font-size:1em;
+}
