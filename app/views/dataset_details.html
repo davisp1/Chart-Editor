@@ -1,14 +1,16 @@
+<div id="test" ng-controller="DataSetEditCtrl">
 <tabset class="content">
     <tab heading="Table">
-        
+      <div ng-include="'views/ngtable.html'"></div>
     </tab>
-    <tab heading="Form"> 
+    <tab heading="Form">
       <div id="new_data_json">
         <form role="form"
               name="dataset_form"
               ng-submit="saveData()"
-              ng-controller="DataSetEditCtrl">
+              >
           <h3>data</h3>
+
           <div class="panel-group" id="new_data">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -18,7 +20,7 @@
               </div>
                 <div class="panel-body">
 
-                  <div class="form-group json" style="height:auto" ng-show="checkModel === 'json'">
+                  <div class="form-group json" style="height:auto" ng-show="checkModel === 'json'" ng-cloak>
                     <label for="dataTextarea">JSON</label>
                     <textarea class="form-control" rows="15" id="dataTextarea" ng-bind="jsonDataAsText" placeholder="Enter JSON"></textarea>
                     <p class="help-block">Example block-level help text here.</p>
@@ -43,11 +45,7 @@
 
           <div class="form-group" style="height:auto">
             <h3>Title</h3>
-            <input type="text" class="form-control" ng-change="{{console.log('toto')}}" ng-model="datasetTitle">
-            <!--
-            <div class="custom-error" ng-show="dataset_form.dataTitle.$dirty && dataset_form.dataTitle.$invalid">Invalid:
-                    <span ng-show="dataset_form.dataTitle.$error.required">Username is required.</span>
-            </div>-->
+            <input type="text" class="form-control" ng-change="{{console.log('toto')}}" ng-model="datasetTitle"/>
           </div>
           <button type="submit" class="btn btn-default" >Submit</button>
           <button ng-click="deleteData()" class="btn btn-default" >Delete</button>
@@ -55,3 +53,4 @@
       </div>
     </tab>
 </tabset>
+</div>
