@@ -1,9 +1,5 @@
 'use strict';
 
-/* Controllers */
-
-//var datasetControllers = angular.module('DataSetControllers', ['ngRoute','angularFileUpload','ngStorage']);
-
 function removeAccents(strAccents) {
     strAccents = strAccents.split('');
     var strAccentsOut = [];
@@ -22,20 +18,9 @@ function removeAccents(strAccents) {
     return strAccentsOut;
   }
 
-/**datasetControllers.controller('DataSetListCtrl', ['$scope',
-  function($scope) {
-    console.log($scope);
-  }]);
-
-datasetControllers.controller('DataSetCreateCtrl', ['$scope', '$routeParams', '$rootScope',
-   function($rootScope) {
-    $rootScope.currenDataset = '';
-  }]);
-**/
-
 angular.module('newChartEditorApp')
-   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location',
-   function($scope, $routeParams, $rootScope, $upload, $localStorage, $location) {
+   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile',
+   function($scope, $routeParams, $rootScope, $upload, $localStorage, $location, ngTableParams, $filter, $compile) {
         $rootScope.currentDataset = $routeParams.datasetId;
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
@@ -100,6 +85,7 @@ angular.module('newChartEditorApp')
             $location.path('/');
           };
       }]);
+
 
 function hasClass(element, classNameToTestFor) {
     var classNames = element.className.split(' ');
