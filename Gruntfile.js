@@ -314,7 +314,12 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
-
+    'gh-pages': {                                                               
+	 options: {                                                              
+               base: 'dist'                                                      
+	 },                                                                      
+	src: ['**']                                                             
+     },         
     // Test settings
     karma: {
       unit: {
@@ -324,7 +329,7 @@ module.exports = function (grunt) {
     }
   });
 
-
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
