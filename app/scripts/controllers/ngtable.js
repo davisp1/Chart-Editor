@@ -10,10 +10,10 @@ angular.module('newChartEditorApp')
 
     $scope.datasetId = $routeParams.datasetId;
     $scope.$storage = $localStorage.$default({ datasets: {} });
-
+    $scope.titles = []
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
-        count: 25           // count per page
+        count: 10           // count per page
       }, {
         total: function() { return getData().length; }, // length of data
         getData: function($defer, params, scope) {
