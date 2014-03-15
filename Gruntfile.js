@@ -375,6 +375,11 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
+  grunt.registerTask('ghpages', [
+    'build',
+    'gh-pages'
+  ]);
+  
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
