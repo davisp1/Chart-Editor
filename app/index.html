@@ -42,7 +42,14 @@
             <tabset class="menu">
               <tab heading="DataSet">
                 <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
-                    <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}"><a href="#/dataset/edit/{{dataset.id||dataset.title}}">{{dataset.title||dataset.id}}</a></li>
+                    <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
+                      <a href="#/dataset/edit/{{dataset.id}}">
+                        <button class="btn-default btn-xs pull-right" ng-click="deleteData(dataset.id)">
+                          <span class="glyphicon glyphicon-remove"</span>
+                        </button>
+                        {{dataset.title||dataset.id}}
+                      </a>
+                    </li>
                 </ul> 
                 <button class="btn btn-default btn-sm" ng-click="goNext('/dataset/create')"> Create </a></button>
               </tab>

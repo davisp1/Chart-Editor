@@ -9,21 +9,28 @@ angular.module('newChartEditorApp')
     ];
 
     $scope.datasets = $localStorage.datasets;
-    console.log($scope.datasets);
     $scope.navType = 'pills';
 
+    /** **/
     $scope.isActive = function (viewLocation) {
-        console.log( $rootScope.currentDataset);
         return $rootScope.currentDataset === viewLocation;
       };
 
+    /** **/
     $scope.setActive = function (viewLocation) {
 		    $rootScope.currentDataset = viewLocation;
       };
 
     $rootScope.currentDataset = '';
 
+    /** **/
     $scope.goNext = function (hash) {
         $location.path(hash);
+      };
+
+    /** Delete a DataSet **/
+    $scope.deleteData = function(id){
+        delete $localStorage.datasets[id];
+        $location.path('/');
       };
   });
