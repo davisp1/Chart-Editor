@@ -18,7 +18,7 @@ body {
 .menu_container{
       background: #F7F7F9;
       padding:10px;
-
+      height: 100%;
 }
 .menu_container h2{
   text-align: center;
@@ -26,8 +26,25 @@ body {
 .header{
   margin-bottom: 0 !important;
 }
+
+.header h2{
+  margin:0;
+  padding:10px;
+}
+
+.menu ul a{
+  display: inline-block;
+  width: 100%;
+  padding: 6px;
+}
 .main{
   margin-top:10px;
+}
+.row{
+  height: 100%;
+}
+.menu{
+  height:97%;
 }
 .container{
   width:100%;
@@ -119,4 +136,34 @@ body {
 .ng-table > thead .btn {
     font-weight:bold;
     font-size:1em;
+}
+
+.header{
+  position:absolute;
+  top:0;
+  height:5%;
+  width: 100%;
+}
+
+#container{
+  position:absolute;
+  top:5%;
+  bottom: 5%;
+  width:100%;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5%;
+}
+
+.main{
+  overflow:auto;
+  height: 98%;
+}
+
+.tab-content{
+  padding-top:30px;
 }

@@ -28,19 +28,17 @@
 
     <div class="header">
       <ul class="nav nav-pills pull-right">
-        <li class="active"><a ng-href="#">Home</a></li>
-        <li><a ng-href="#">{{test}}About</a></li>
+        <li><a ng-href="#">About</a></li>
         <li><a ng-href="#">Contact</a></li>
       </ul>
-      <h3 class="text-muted">new_chart_editor</h3>
+      <h2>Chart Editor <small>using D3</small></h2>
+
     </div>
     
     <!-- Add your site or application content here -->
-    <div class="container">
+    <div id="container" class="container">
         <div class="row">
           <div class="menu_container col-xs-2" ng-controller="MenuCtrl">
-
-            <h2>Chart Editor <small>using D3</small></h2>
             <tabset class="menu">
               <tab heading="DataSet">
                 <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
