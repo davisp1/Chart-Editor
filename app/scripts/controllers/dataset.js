@@ -25,6 +25,7 @@ angular.module('newChartEditorApp')
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
         $scope.data = [];
+        $scope.datasetTitle = "";
 
         $scope.computeData = function(){
             $scope.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
@@ -68,7 +69,6 @@ angular.module('newChartEditorApp')
 
         $scope.saveData = function(){
           var isNew = (typeof($scope.datasetId) === 'undefined');
-
           if (isNew === true) {
             $scope.datasetId = removeAccents($scope.datasetTitle);
           }
