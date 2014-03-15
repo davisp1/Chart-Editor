@@ -45,7 +45,7 @@
                     <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
                       <a href="#/dataset/edit/{{dataset.id}}">
                         <button class="btn-default btn-xs pull-right" ng-click="deleteData(dataset.id)">
-                          <span class="glyphicon glyphicon-remove"</span>
+                          <span class="glyphicon glyphicon-remove"></span>
                         </button>
                         {{dataset.title||dataset.id}}
                       </a>
@@ -64,6 +64,7 @@
           <div class="main col-xs-10" ng-view></div>
         </div>
     </div>
+    <span id="spinner" us-spinner spinner-key="spinner-1"></span>
 
     <div class="footer">
       <p>♥ D3</p>
@@ -97,9 +98,11 @@
     <script src="bower_components/angular-charts/dist/angular-charts.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
-    <script src="bower_components/ng-table/ng-table.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/ng-table/ng-table.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
