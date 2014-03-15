@@ -11,13 +11,14 @@
             <input type="text" class="form-control" ng-model="datasetTitle" required></input>
           </div>
 
-          <div class="panel-group" id="new_data" ng-init="showdata=false;" style="cursor:pointer;" ng-click="showdata=true">
-            <h3>Data
+          <div class="panel-group" id="new_data" style="cursor:pointer;" ng-init="showdata=false;">
+            <h3 ng-click="showdata=!showdata">Data
               <button type="button" class="btn btn-default btn-xs" style="border:0;" >
-                <span class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-if="showdata === true" class="glyphicon glyphicon-chevron-up"></span>
+                <span ng-if="showdata === false" class="glyphicon glyphicon-chevron-down"></span>
               </button>
             </h3>
-            <div class="panel panel-default" ng-show="showdata">
+            <div class="panel panel-default" ng-hide="showdata===false">
               <div class="panel-heading">
                   <input type="radio" name="source_type" value="json" checked ng-model="checkModel"> JSON
                   <input type="radio" name="source_type" value="csv" ng-model="checkModel"> Csv
