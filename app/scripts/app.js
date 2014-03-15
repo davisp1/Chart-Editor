@@ -8,6 +8,7 @@ angular.module('newChartEditorApp', [
   'ngStorage',
   'ui.bootstrap',
   'angularFileUpload',
+  'angularSpinner',
   'ngTable'
 ])
   .config(function ($routeProvider) {
@@ -17,11 +18,11 @@ angular.module('newChartEditorApp', [
         controller: 'MainCtrl'
       })
       .when('/dataset/create', {
-        templateUrl: 'views/dataset_details.html',
+        templateUrl: 'views/dataset.html',
         controller: 'DataSetEditCtrl'
       })
       .when('/dataset/edit/:datasetId', {
-        templateUrl: 'views/dataset_details.html',
+        templateUrl: 'views/dataset.html',
         controller: 'DataSetEditCtrl'
       })
       .otherwise({

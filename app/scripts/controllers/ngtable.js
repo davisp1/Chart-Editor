@@ -8,12 +8,22 @@ angular.module('newChartEditorApp')
       return $scope.data||[];
     };
 
+    $scope.reload = function(){
+      var dataset = $scope.$storage.datasets[$scope.datasetId];
+      if (typeof(dataset) !== 'undefined') {
+        $scope.data = dataset.data;
+        $scope.titles = dataset.titles;
+        $scope.tableParams.reload();
+      }
+    }
+
     $scope.datasetId = $routeParams.datasetId;
     $scope.$storage = $localStorage.$default({ datasets: {} });
     $scope.titles = []
+
     $scope.tableParams = new ngTableParams({
         page: 1,            // show first page
-        count: 10           // count per page
+        count: 10           // 10 per page
       }, {
         total: function() { return getData().length; }, // length of data
         getData: function($defer, params, scope) {
@@ -27,16 +37,19 @@ angular.module('newChartEditorApp')
           $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           },
       });
-      
+
+    $scope.saveTitles = function(){
+      $scope.$storage.datasets[$scope.datasetId]["titles"] = $scope.titles;
+    }
+
     if($scope.datasetId){
+      
       var dataset = $scope.$storage.datasets[$scope.datasetId];
+    
       if (typeof(dataset) !== 'undefined') {
         $scope.data = dataset.data;
-        var titles = [];
-        for (var i = 0; i < $scope.data[0].length; i++) {
-          titles.push({ title:"col"+i, field:"col"+i });
-        }
-        $scope.titles = titles;
+        $scope.titles = dataset.titles;
       }
     }
+
   }]);
