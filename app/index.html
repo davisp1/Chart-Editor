@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Chart Editor</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -40,11 +40,14 @@
         <div class="row">
           <div class="menu_container col-xs-2" ng-controller="MenuCtrl">
             <tabset class="menu">
-              <tab heading="DataSet">
+              <tab>
+                <tab-heading>
+                  <span ng-click = "goNext('/dataset')"><i class="glyphicon glyphicon-hdd"></i> DataSets</span>
+                </tab-heading>
                 <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
                     <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
                       <a href="#/dataset/edit/{{dataset.id}}">
-                        <button class="btn-default btn-xs pull-right" ng-click="deleteData(dataset.id)">
+                        <button class="btn-danger btn-xs pull-right" ng-click="deleteData(dataset.id)">
                           <span class="glyphicon glyphicon-remove"></span>
                         </button>
                         {{dataset.title||dataset.id}}
@@ -53,7 +56,10 @@
                 </ul> 
                 <button class="btn btn-default btn-sm" ng-click="goNext('/dataset/create')"> Create </a></button>
               </tab>
-              <tab heading="Charts">
+              <tab>
+                <tab-heading>
+                  <span ng-click = "goNext('/charts')"><i class="glyphicon glyphicon-stats"></i> Charts</span>
+                </tab-heading>
                 <tabset vertical="true" type="navType">
                   <tab heading="Chart"></tab>
                   <tab heading="Bars"></tab>

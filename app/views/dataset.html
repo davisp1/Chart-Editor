@@ -28,7 +28,7 @@
 
                   <div class="form-group json" style="height:auto" ng-show="checkModel === 'json'" ng-cloak>
                     <label for="dataTextarea">JSON</label>
-                    <textarea class="form-control" rows="15" id="dataTextarea" ng-bind="jsonDataAsText" placeholder="Enter JSON"></textarea>
+                    <textarea class="form-control" rows="15" id="dataTextarea" ng-model="jsonDataAsText" placeholder="Enter JSON"></textarea>
                     <p class="help-block">format : '[ [ 'value1', 'value2' ]]'</p>
                   </div>
 
@@ -57,8 +57,8 @@
           </div>
 
 
-          <button type="submit" class="btn btn-default" >Submit</button>
-          <button ng-click="deleteData()" type="button" class="btn btn-default">Delete</button>
+          <button type="submit" class="btn btn btn-success" >Submit</button>
+          <button ng-click="deleteData()" type="button" class="btn btn btn-danger">Delete</button>
         </form>
       </div>
     </tab>

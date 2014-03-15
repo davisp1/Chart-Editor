@@ -51,10 +51,10 @@ angular.module('newChartEditorApp')
           };
 
 
-        $scope.formatTitles = function(current_titles){
+        $scope.getFormatTitles = function(current_titles, data){
           var titles = [];
 
-          for (var i = 0; i < $scope.data[0].length; i++) {
+          for (var i = 0; i < data[0].length; i++) {
             if(typeof current_titles[i] === "undefined"){
               titles.push({ title:"col"+i, 
                             field:"col"+i });
@@ -68,7 +68,7 @@ angular.module('newChartEditorApp')
               }
             }
           }
-          $scope.titles = titles;
+          return titles;
         };
    
 
@@ -79,11 +79,7 @@ angular.module('newChartEditorApp')
               reader.onload = function(e) {
                     var result = e.target.result;
                     var data = d3.csv.parseRows(result.replace(/\s*;/g, ','));
-                    var firstrow = data[0];
-                    $scope.data = data;
-                    $scope.formatTitles(($scope.hasTitles) ? firstrow : []);
-
-                    $scope.computeData();
+                    $scope.datacsv = data;
                   };
               reader.readAsText(file);
             }
@@ -94,18 +90,41 @@ angular.module('newChartEditorApp')
           };
 
         $scope.saveData = function(){
-          usSpinnerService.spin('spinner-1');
           var isNew = (typeof($scope.datasetId) === 'undefined');
           if (isNew === true) {
             $scope.datasetId = removeAccents($scope.datasetTitle);
           }
 
-          $scope.$storage.datasets[$scope.datasetId] = { 'title' : $scope.datasetTitle, 'id' : $scope.datasetId, 'data' : $scope.data, 'titles' : $scope.titles };
+          var data = $scope.data;
+          var titles = $scope.titles;
 
+          console.log($scope);
+          if($scope.checkModel==="json") {
+            try {
+                data = jQuery.parseJSON($scope.jsonDataAsText);
+                titles = $scope.getFormatTitles([], data);
+
+            }
+            catch(e){
+                alert("error " + e);
+                console.log($scope.jsonDataAsText);
+                return false;
+            }
+          }
+          else if($scope.checkModel==="csv") {
+            data = $scope.datacsv;
+            var firstrow = data[0];
+            titles = $scope.getFormatTitles((($scope.hasTitles) ? firstrow : []), data);
+          }
+
+          $scope.$storage.datasets[$scope.datasetId] = { 'title' : $scope.datasetTitle, 'id' : $scope.datasetId, 'data' : data, 'titles' : titles };
+          $scope.data = data;
+          $scope.titles = titles;
           if (isNew === true) {
             $location.path('/dataset/edit/' + $scope.datasetId);
           }
-          else if($scope.data.length>0){
+          else if($scope.data.length>0 && angular.element("#dataset_tableview").scope()){
+            $scope.computeData();
             angular.element("#dataset_tableview").scope().reload();
           }
           usSpinnerService.stop('spinner-1')

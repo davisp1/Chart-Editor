@@ -132,6 +132,7 @@ body {
     border-bottom: 5px solid #dddddd;
     font-size:1.2em;
     min-width: 100px;
+    padding-top:0;
 }
 
 .ng-table > thead .btn {
