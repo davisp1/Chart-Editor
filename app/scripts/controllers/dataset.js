@@ -31,7 +31,6 @@ angular.module('newChartEditorApp')
             var lines = $scope.data.map(function(element){ return element.join('\t'); });
             var text = lines.join('\n');
             $scope.dataFromCopy = text;
-            usSpinnerService.stop('spinner-1')
           };
 
         if($scope.datasetId){
@@ -45,7 +44,7 @@ angular.module('newChartEditorApp')
         }
 
         $scope.onFileSelect = function($files) {
-            usSpinnerService.spin('spinner-1');
+            //usSpinnerService.spin('spinner-1');
             //$files: an array of files selected, each file has name, size, and type.
             $scope.parseFile($files[0]);
           };
@@ -98,16 +97,13 @@ angular.module('newChartEditorApp')
           var data = $scope.data;
           var titles = $scope.titles;
 
-          console.log($scope);
           if($scope.checkModel==="json") {
             try {
                 data = jQuery.parseJSON($scope.jsonDataAsText);
                 titles = $scope.getFormatTitles([], data);
-
             }
             catch(e){
                 alert("error " + e);
-                console.log($scope.jsonDataAsText);
                 return false;
             }
           }
@@ -120,6 +116,7 @@ angular.module('newChartEditorApp')
           $scope.$storage.datasets[$scope.datasetId] = { 'title' : $scope.datasetTitle, 'id' : $scope.datasetId, 'data' : data, 'titles' : titles };
           $scope.data = data;
           $scope.titles = titles;
+
           if (isNew === true) {
             $location.path('/dataset/edit/' + $scope.datasetId);
           }
@@ -127,7 +124,7 @@ angular.module('newChartEditorApp')
             $scope.computeData();
             angular.element("#dataset_tableview").scope().reload();
           }
-          usSpinnerService.stop('spinner-1')
+          //usSpinnerService.stop('spinner-1')
 
         };
 

@@ -8,8 +8,8 @@ angular.module('newChartEditorApp', [
   'ngStorage',
   'ui.bootstrap',
   'angularFileUpload',
-  'angularSpinner',
-  'ngTable'
+  'ngTable',
+  'ngAnimate-animate.css',
 ])
   .config(function ($routeProvider) {
     $routeProvider
