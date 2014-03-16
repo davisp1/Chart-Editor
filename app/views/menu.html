@@ -1,0 +1,29 @@
+<div ng-controller="MenuCtrl">
+  <tabset class="menu">
+    <tab>
+      <tab-heading>
+        <span ng-click = "goNext('/dataset')"><i class="glyphicon glyphicon-hdd"></i> DataSets</span>
+      </tab-heading>
+      <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
+          <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
+            <a href="#/dataset/edit/{{dataset.id}}">
+              <button class="btn-danger btn-xs pull-right" ng-click="deleteData(dataset.id)">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+              <span>{{dataset.title||dataset.id}}<span>
+            </a>
+          </li>
+      </ul> 
+      <button class="btn btn-default btn-sm" ng-click="goNext('/dataset/create')"> Create </a></button>
+    </tab>
+    <tab>
+      <tab-heading>
+        <span ng-click = "goNext('/charts')"><i class="glyphicon glyphicon-stats"></i> Charts</span>
+      </tab-heading>
+      <tabset vertical="true" type="navType">
+        <tab heading="Chart"></tab>
+        <tab heading="Bars"></tab>
+      </tabset>
+    </tab>
+  </tabset>
+</div>

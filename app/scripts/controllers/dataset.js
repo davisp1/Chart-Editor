@@ -1,23 +1,5 @@
 'use strict';
 
-function removeAccents(strAccents) {
-    strAccents = strAccents.split('');
-    var strAccentsOut = [];
-    var strAccentsLen = strAccents.length;
-    var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
-    var accentsOut = ['A','A','A','A','A','A','a','a','a','a','a','a','O','O','O','O','O','O','O','o','o','o','o','o','o','E','E','E','E','e','e','e','e','e','C','c','D','I','I','I','I','i','i','i','i','U','U','U','U','u','u','u','u','N','n','S','s','Y','y','y','Z','z'];
-    for (var y = 0; y < strAccentsLen; y++) {
-      if(accents.indexOf(strAccents[y]) !== -1) {
-        strAccentsOut[y] = accentsOut[accents.indexOf(strAccents[y])];
-      }
-      else{
-        strAccentsOut[y] = strAccents[y];
-      }
-    }
-    strAccentsOut = strAccentsOut.join('');
-    return strAccentsOut;
-  }
-
 angular.module('newChartEditorApp')
    .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile', '$timeout',
    function($scope, $routeParams, $rootScope, $upload, $localStorage, $location, ngTableParams, $filter, $compile, $timeout) {
@@ -148,4 +130,22 @@ function hasClass(element, classNameToTestFor) {
       }
     }
     return false;
+  }
+
+function removeAccents(strAccents) {
+    strAccents = strAccents.split('');
+    var strAccentsOut = [];
+    var strAccentsLen = strAccents.length;
+    var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var accentsOut = ['A','A','A','A','A','A','a','a','a','a','a','a','O','O','O','O','O','O','O','o','o','o','o','o','o','E','E','E','E','e','e','e','e','e','C','c','D','I','I','I','I','i','i','i','i','U','U','U','U','u','u','u','u','N','n','S','s','Y','y','y','Z','z'];
+    for (var y = 0; y < strAccentsLen; y++) {
+      if(accents.indexOf(strAccents[y]) !== -1) {
+        strAccentsOut[y] = accentsOut[accents.indexOf(strAccents[y])];
+      }
+      else{
+        strAccentsOut[y] = strAccents[y];
+      }
+    }
+    strAccentsOut = strAccentsOut.join('');
+    return strAccentsOut;
   }
