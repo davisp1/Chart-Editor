@@ -7,8 +7,6 @@ body {
     padding-top: 30px;
     border: 1px solid #dddddd;
     padding: 10px;
-    min-height: 600px;
-    height:100%;
     border-top: none;
 }
 .tab-content .btn{
@@ -44,7 +42,7 @@ body {
   height: 100%;
 }
 .menu{
-  height:97%;
+  height:95%;
 }
 .container{
   width:100%;
@@ -123,33 +121,68 @@ body {
   }
 }
 
+/* Responsive: Portrait tablets and up */
+@media screen and (max-width: 1290px) {
+  /* Remove the padding we set earlier */
+  .menu .nav.nav-tabs li a{
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+}
+
 .ng-table {
     border: 1px solid #000;
+    border:1px solid #d3d3d3;
+    background:#fefefe;
+    margin:1% auto 0;
+    -moz-border-radius:5px; /* FF1+ */
+    -webkit-border-radius:5px; /* Saf3-4 */
+    border-radius:5px;
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 .ng-table > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 5px solid #dddddd;
-    font-size:1.2em;
+    border-bottom: 3px solid #dddddd;
+    font-size:1.1em;
     min-width: 100px;
+    padding-top:2px;
+    padding-bottom: 2px;
+    //text-shadow: 1px 1px 1px #fff; 
+  background:rgba(241, 241, 241, 0.49);
+    background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
+    background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
+}
+
+.ng-table > tbody > tr > td{
     padding-top:0;
+    padding-bottom: 3px;
+    vertical-align: middle;
+    border-top:1px solid #e0e0e0; 
+    border-right:1px solid #e0e0e0;
+    background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
+    background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
 }
 
 .ng-table > thead .btn {
-    font-weight:bold;
+    font-weight:normal;
     font-size:1em;
+    margin-top:0;
+    padding:3px 5px;
+    margin-bottom:2px;
 }
 
 .header{
   position:absolute;
   top:0;
-  height:5%;
+  height:6%;
   width: 100%;
 }
 
 #container{
   position:absolute;
-  top:5%;
+  top:6%;
   bottom: 5%;
   width:100%;
 }
@@ -172,4 +205,26 @@ body {
 
 .nav li{
   cursor:pointer; 
+}
+
+.menu .nav.nav-tabs li a{
+  padding: 10px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  color: #ffffff;
+  background-color: #428bca;
+  opacity: 0.96;
+}
+
+div[ng-view].ng-enter {
+    -webkit-animation: fadeInRight 0.8s;
+    animation: fadeInRight 0.8s;
+}
+
+div[ng-view].ng-enter {
+    -webkit-animation: fadeInRight 0.8s;
+    animation: fadeInRight 0.8s;
 }

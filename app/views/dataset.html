@@ -18,7 +18,7 @@
                 <span ng-if="showdata === false" class="glyphicon glyphicon-chevron-down"></span>
               </button>
             </h3>
-            <div class="panel panel-default" ng-hide="showdata===false">
+            <div class="panel panel-default dn-fade-up" ng-show="showdata">
               <div class="panel-heading">
                   <input type="radio" name="source_type" value="json" checked ng-model="checkModel"> JSON
                   <input type="radio" name="source_type" value="csv" ng-model="checkModel"> Csv
@@ -62,8 +62,12 @@
         </form>
       </div>
     </tab>
-    <tab heading="Table">
-      <div ng-if="data">
+    <tab heading="Table" ng-init="isCliked=false" ng-click="isClicked=true">
+      <tab-heading>
+        <span ng-click = "goNext('/charts')">Table</span>
+      </tab-heading>
+      <div ng-if="data && isClicked">
+        {{test}}
         <div ng-include="'views/ngtable.html'"></div>
       </div>
     </tab>
