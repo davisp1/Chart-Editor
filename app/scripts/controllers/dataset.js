@@ -37,22 +37,18 @@ angular.module('newChartEditorApp')
           };
 
 
-        $scope.getFormatTitles = function(current_titles, data){
+        $scope.getFormatTitles = function(currentTitles, data){
           var titles = [];
 
           for (var i = 0; i < data[0].length; i++) {
-            if(typeof current_titles[i] === "undefined"){
-              titles.push({ title:"col"+i, 
-                            field:"col"+i });
+            var title = {};
+            if(typeof currentTitles[i] === "undefined"){
+              title = { title:"col"+i, field:"col"+i };
             }
             else {
-              if(typeof current_titles[i].title !== "undefined") {
-                titles.push(current_titles[i]);
-              }
-              else {
-                titles.push({ title: current_titles[i], field: "col" + i});
-              }
+              title = (typeof currentTitles[i].title !== "undefined") ? currentTitles[i] : { title: currentTitles[i], field: "col" + i};
             }
+              titles.push(title);
           }
           return titles;
         };

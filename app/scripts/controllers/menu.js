@@ -25,6 +25,7 @@ angular.module('newChartEditorApp')
 
     /** **/
     $scope.goNext = function (hash) {
+        $rootScope.currentDataset = '';
         $location.path(hash);
       };
 
