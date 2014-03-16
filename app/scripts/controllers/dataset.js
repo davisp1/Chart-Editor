@@ -19,13 +19,13 @@ function removeAccents(strAccents) {
   }
 
 angular.module('newChartEditorApp')
-   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile', 'usSpinnerService',
-   function($scope, $routeParams, $rootScope, $upload, $localStorage, $location, ngTableParams, $filter, $compile, usSpinnerService) {
+   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile', '$timeout',
+   function($scope, $routeParams, $rootScope, $upload, $localStorage, $location, ngTableParams, $filter, $compile, $timeout) {
         $rootScope.currentDataset = $routeParams.datasetId;
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
         $scope.data = [];
-
+        $scope.titles = [];
         $scope.computeData = function(){
             $scope.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
             var lines = $scope.data.map(function(element){ return element.join('\t'); });
@@ -38,8 +38,13 @@ angular.module('newChartEditorApp')
           if (typeof(dataset) !== 'undefined') {
             $scope.data = dataset.data;
             $scope.datasetTitle = dataset.title || '';
-            $scope.titles = dataset.titles;
-            $scope.computeData();
+            $timeout(function(){
+              $scope.titles = dataset.titles;}
+            , 200);
+
+
+            
+            //$scope.computeData();
           }
         }
 
@@ -109,8 +114,8 @@ angular.module('newChartEditorApp')
           }
           else if($scope.checkModel==="csv") {
             data = $scope.datacsv;
-            var firstrow = data[0];
-            titles = $scope.getFormatTitles((($scope.hasTitles) ? firstrow : []), data);
+            var firstrow = ($scope.hasTitles) ? data.shift() : [];
+            titles = $scope.getFormatTitles(firstrow, data);
           }
 
           $scope.$storage.datasets[$scope.datasetId] = { 'title' : $scope.datasetTitle, 'id' : $scope.datasetId, 'data' : data, 'titles' : titles };
