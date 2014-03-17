@@ -4,12 +4,13 @@ angular.module('newChartEditorApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute',
-  'ngStorage',
-  'ui.bootstrap',
-  'angularFileUpload',
-  'ngTable',
-  'ngAnimate-animate.css',
+  'ngRoute', //routing
+  'ngStorage', //localstorage
+  'ui.bootstrap', //bootstrap 3
+  'angularFileUpload', //FileUpload
+  'ngTable', // Data Visualisation as table
+  'ngAnimate-animate.css', // animate.css
+  'angularCharts' // D3 Charts
 ])
   .config(function ($routeProvider) {
     $routeProvider

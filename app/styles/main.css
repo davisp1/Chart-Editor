@@ -228,3 +228,9 @@ div[ng-view].ng-enter {
     -webkit-animation: fadeInRight 0.8s;
     animation: fadeInRight 0.8s;
 }
+
+.chart {
+    float:left;
+    width: 100%;
+    height:400px;
+}
