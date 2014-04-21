@@ -2,27 +2,39 @@
     <div>
       <span>{{data.length}} items <span ng-if="data.length>0">- {{titles.length}} columns</span>
       <table ng-table="tableParams" class="table" >
-        <thead>
-            <tr ng-init="titlestmp={}">
-              <th style="text-align:left">
-                  <button ng-if="!titlestmp.$edit" href="" class="btn btn-default btn-sm" ng-click="titlestmp.$edit = true;"><span class="glyphicon glyphicon-pencil"></span> Titles</button>
-                  <a ng-if="titlestmp.$edit" href="" class="btn btn-primary btn-sm" ng-click="saveTitles();titlestmp.$edit = false;">Save</a>
+        <thead ng-init="titlestmp={}">
+
+            <tr ng-if="!titlestmp.$edit">
+              <th>
+                  <button href="" class="btn btn-default btn-sm" title="Titles" ng-click="titlestmp.$edit = true;titlestmp.data = getTmpData(titles)"><span class="glyphicon glyphicon-pencil"></span></button>
               </th>
               <th ng-repeat="title in titles">
                   <span ng-if="!titlestmp.$edit">{{title.title}}</span>
-                  <div ng-if="titlestmp.$edit"><input class="form-control" type="text" ng-model="title.title"/></div>
+              </th>
+
+            </tr>
+
+            <tr ng-if="titlestmp.$edit">
+              <th style="text-align:left">
+                  <button ng-if="titlestmp.$edit" class="btn btn-primary btn-sm" ng-click="saveTitles(titlestmp.data);titlestmp.$edit = false;">Save</button>
+                  <button ng-if="titlestmp.$edit" ng-click="titlestmp.$edit = false;" type="button" class="btn">Cancel</button>
+              </th>
+              <th ng-repeat="title in titles">
+                  <div ng-if="titlestmp.$edit"><input class="form-control" type="text" ng-model="titlestmp.data[$index].title"/></div> 
               </th>
             </tr>
+
         </thead>
         <tbody>
-            <tr ng-repeat="(key,row) in $data">
-              <td data-title="'Actions'" width="100">
-                  <a ng-if="!row.$edit" href="" class="btn btn-default btn-sm" ng-click="row.$edit = true"><span class="glyphicon glyphicon-pencil"></span></a>
-                  <a ng-if="row.$edit" href="" class="btn btn-primary btn-sm" ng-click="row.$edit = false">Save</a>
+            <tr ng-repeat="(key,row) in $data" ng-init="tmprow={ data:getTmpData(row) }">
+              <td data-title="'Actions'" width="50">
+                  <a ng-if="!tmprow.$edit" href="" class="btn btn-default btn-sm" title="row" ng-click="tmprow.$edit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
+                  <a ng-if="tmprow.$edit" href="" class="btn btn-primary btn-sm" title="row" ng-click="tmprow.$edit = false;$data[key]=tmprow.data;saveData($data);">Save</a>
+                  <button ng-if="tmprow.$edit" ng-click="tmprow.$edit = false;tmprow.data=$data[key];" type="button" class="btn">Cancel</button>
               </td>
-              <td ng-repeat="col in row track by $index">
-                  <span ng-if="!row.$edit">{{col}}</span>
-                  <div ng-if="row.$edit"><input class="form-control" type="text" ng-model="$data[key][$index]"/></div>
+              <td ng-repeat="col in tmprow.data track by $index">
+                  <span ng-if="!tmprow.$edit">{{col}}</span>
+                  <div ng-if="tmprow.$edit"><input class="form-control" type="text" ng-model="tmprow.data[$index]"/></div>
               </td>
             </tr>
         </tbody>

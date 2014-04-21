@@ -8,6 +8,10 @@ angular.module('newChartEditorApp')
       return $scope.data||[];
     };
 
+    $scope.getTmpData = function(data){
+      return angular.copy(data);
+    };
+
     $scope.reload = function(){
       var dataset = $scope.$storage.datasets[$scope.datasetId];
       if (typeof(dataset) !== 'undefined') {
@@ -16,6 +20,16 @@ angular.module('newChartEditorApp')
         $scope.tableParams.reload();
       }
     };
+
+    $scope.saveTitles = function(titles){
+      $scope.titles = titles;
+      $scope.$storage.datasets[$scope.datasetId].titles = titles;
+      //$scope.$apply()
+    };
+
+    $scope.saveData = function(data){
+      $scope.$storage.datasets[$scope.datasetId].data = data;
+    }
 
     $scope.datasetId = $routeParams.datasetId;
     $scope.$storage = $localStorage.$default({ datasets: {} });
@@ -37,10 +51,6 @@ angular.module('newChartEditorApp')
           $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         },
       });
-
-    $scope.saveTitles = function(){
-      $scope.$storage.datasets[$scope.datasetId].titles = $scope.titles;
-    };
 
     if($scope.datasetId){
       
