@@ -1,6 +1,7 @@
  <div id="dataset_tableview"  ng-controller="NgTableCtrl" style="overflow:auto;">
     <div>
-      <span>{{data.length}} items <span ng-if="data.length>0">- {{titles.length}} columns</span>
+      <span><span ng-bind="tableParams.total()"></span> items <span ng-if="data.length>0">- {{titles.length}} columns</span>
+      <p>Filter: <input class="form-control" type="text" ng-model="search.$" /></p>
       <table ng-table="tableParams" class="table" >
         <thead ng-init="titlestmp={}">
 
@@ -26,7 +27,7 @@
 
         </thead>
         <tbody>
-            <tr ng-repeat="(key,row) in $data" ng-init="tmprow={ data:getTmpData(row) }">
+            <tr ng-repeat="(key,row) in  $data|filter:search.$" ng-init="tmprow={ data:getTmpData(row) }">
               <td data-title="'Actions'" width="50">
                   <a ng-if="!tmprow.$edit" href="" class="btn btn-default btn-sm" title="row" ng-click="tmprow.$edit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
                   <a ng-if="tmprow.$edit" href="" class="btn btn-primary btn-sm" title="row" ng-click="tmprow.$edit = false;$data[key]=tmprow.data;saveData($data);">Save</a>

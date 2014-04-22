@@ -2,7 +2,7 @@
 
 angular.module('newChartEditorApp')
   .controller('NgTableCtrl', ['$scope', '$routeParams', '$localStorage','ngTableParams', '$filter',
-   function($scope, $routeParams, $localStorage, ngTableParams) {
+   function($scope, $routeParams, $localStorage, ngTableParams, $filter) {
 
     var getData =function(){
       return $scope.data||[];
@@ -11,6 +11,7 @@ angular.module('newChartEditorApp')
     $scope.getTmpData = function(data){
       return angular.copy(data);
     };
+
 
     $scope.reload = function(){
       var dataset = $scope.$storage.datasets[$scope.datasetId];
@@ -41,9 +42,10 @@ angular.module('newChartEditorApp')
       }, {
         total: function() { return getData().length; }, // length of data
         getData: function($defer, params) {
-          var filteredData = getData();
-          var orderedData = filteredData;
-
+          var data = getData()
+          var filteredata = $filter('filter')( getData(), $scope.search);
+          var orderedData = filteredata;
+          console.log(params.sorting())
           /**params.sorting() ?
                               $filter('orderBy')(filteredData, params.orderBy()) :
                               filteredData;**/
@@ -61,5 +63,13 @@ angular.module('newChartEditorApp')
         $scope.titles = dataset.titles;
       }
     }
+    
+    $scope.$watch("search.$", function () {
+
+      //console.log($scope.tableParams.settings.scope())
+      if($scope.search)
+        $scope.tableParams.reload();
+      //$scope.tableParams.page(1);
+    });
 
   }]);
