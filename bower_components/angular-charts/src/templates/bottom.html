@@ -1,0 +1,22 @@
+<style>
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #333;
+	}
+	.ac-line {
+		fill:none;
+		stroke-width:2px;
+	}
+</style>
+
+<div class='ac-title' style='font-weight: bold;font-size: 1.2em;'>{{acConfig.title}}</div>
+<div class='ac-chart' style='width:100%;'></div>
+<div class='ac-legend' style='width:100%;' ng-show='{{acConfig.legend.display}}'>
+	<table style='list-style:none;margin:0px;padding:0px;'>
+	<tr ng-repeat="l in legends | limitTo:yMaxData">
+		<td><div ng-attr-style='background:{{l.color}}; height:15px;width:15px;'></div></td>
+		<td style=' display: inline-block;' ng-bind='l.title'></td>
+	</tr>
+	</table>
+</div>

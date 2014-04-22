@@ -96,6 +96,10 @@ angular.module('angularCharts').directive('acChart', function($templateCache, $c
      * used for setting radius, bar width of chart
      */
     function setHeightWidth() {
+      
+      totalWidth = element.width();
+      totalHeight = element.height();
+      
       if(!config.legend.display) {
         height = totalHeight;
         width = totalWidth;

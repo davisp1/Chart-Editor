@@ -59,6 +59,9 @@ angular.module('angularCharts').directive('acChart', [
         drawLegend();
       }
       function setHeightWidth() {
+        totalWidth = element.width();
+        totalHeight = element.height();
+        
         if (!config.legend.display) {
           height = totalHeight;
           width = totalWidth;
@@ -666,3 +669,31 @@ angular.module("right", []).run(["$templateCache", function($templateCache) {
     "	</table>\n" +
     "</div>");
 }]);
+
+angular.module("right", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("right",
+    "<style>\n" +
+    " .axis path,\n" +
+    " .axis line {\n" +
+    "   fill: none;\n" +
+    "   stroke: #333;\n" +
+    " }\n" +
+    " .ac-line {\n" +
+    "   fill:none;\n" +
+    "   stroke-width:2px;\n" +
+    " }\n" +
+    "</style>\n" +
+    "\n" +
+    "<div class='ac-title' style='font-weight: bold;font-size: 1.2em;'>{{acConfig.title}}</div>\n" +
+    "<div class='ac-chart' style='float:left;width:75%;'>\n" +
+    "</div>\n" +
+    "<div class='ac-legend' style='float:left; max-width:25%;' ng-show='{{acConfig.legend.display}}'>\n" +
+    " <table style='list-style:none;margin:0px;padding:0px;'>\n" +
+    " <tr ng-repeat=\"l in legends | limitTo:yMaxData\">\n" +
+    "   <td><div ng-attr-style='background:{{l.color}}; height:15px;width:15px;'></div></td>\n" +
+    "   <td style=' display: inline-block;' ng-bind='l.title'></td>\n" +
+    " </tr>\n" +
+    " </table>\n" +
+    "</div>");
+}]);
+
