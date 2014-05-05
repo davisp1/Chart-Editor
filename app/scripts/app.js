@@ -32,10 +32,15 @@ angular.module('newChartEditorApp', [
         templateUrl: 'views/dataset.html',
         controller: 'DataSetEditCtrl'
       })
+      .when('/chart/create', {
+        templateUrl: 'views/chart.html',
+        controller: 'ChartCtrl'
+      })
+      .when('/chart/edit/:charttId', {
+        templateUrl: 'views/chart.html',
+        controller: 'ChartCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
-  })
-  .run(['$templateCache', function ($templateCache) {
-      $templateCache.put('toto.html', '<tr> <th ng-repeat="column in titles" ng-class="{ \'sortable\': parse(column.sortable), \'sort-asc\': params.sorting()[parse(column.sortable)]==\'asc\', \'sort-desc\': params.sorting()[parse(column.sortable)]==\'desc\' }" ng-click="sortBy(column)" ng-show="column.show(this)" ng-init="template=column.headerTemplateURL(this)" class="header {{column.class}}"> <div ng-if="!template" ng-show="!template" ng-bind="parse(column.title)"></div> <div ng-if="template" ng-show="template"><div ng-include="template"></div></div> </th> </tr> <tr ng-show="show_filter" class="ng-table-filters"> <th ng-repeat="column in $columns" ng-show="column.show(this)" class="filter"> <div ng-repeat="(name, filter) in column.filter"> <div ng-if="column.filterTemplateURL" ng-show="column.filterTemplateURL"> <div ng-include="column.filterTemplateURL"></div> </div> <div ng-if="!column.filterTemplateURL" ng-show="!column.filterTemplateURL"> <div ng-include="\'ng-table/filters/\' + filter + \'.html\'"></div> </div> </div> </th> </tr>');
-}]);
+  });

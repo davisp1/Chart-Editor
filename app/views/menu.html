@@ -20,10 +20,14 @@
       <tab-heading>
         <span ng-click = "goNext('/charts')"><i class="glyphicon glyphicon-stats"></i> Charts</span>
       </tab-heading>
-      <tabset vertical="true" type="navType">
-        <tab heading="Chart"></tab>
-        <tab heading="Bars"></tab>
-      </tabset>
+      <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
+          <li ng-repeat="chart in charts" ng-click="setActive(chart.id)" ng-class="{ active: isActive(chart.id) }" data-id="{{chart.id}}">
+            <a href="#/chart/edit/{{chart.id}}">
+              <span>{{chart.title||chart.id}}<span>
+            </a>
+          </li>
+      </ul> 
+      <button class="btn btn-default btn-sm" ng-click="goNext('/chart/create')"> Create </a></button>
     </tab>
   </tabset>
 </div>
