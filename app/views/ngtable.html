@@ -1,12 +1,45 @@
- <div id="dataset_tableview"  ng-controller="NgTableCtrl" style="overflow:auto;">
-    <div>
-      <span><span ng-bind="tableParams.total()"></span> items <span ng-if="data.length>0">- {{titles.length}} columns</span>
-      <p>Filter: <input class="form-control" type="text" ng-model="search.$" /></p>
-      <table ng-table="tableParams" class="table" >
-        <thead ng-init="titlestmp={}">
+ <div id="dataset_tableview"  ng-controller="NgTableCtrl" ng-init="fs=false;" fullscreen="fs">
+    <div ng-init="inEditmode=false;">
+      <p>
+        <!-- monitoring -->
+        <span>
+          <span ng-bind="tableParams.total()"></span> items 
+          <span ng-if="data.length>0">- {{titles.length}} columns
+        </span>
+      </p>
 
+      <!-- Filter -->
+      <p>Filter: <input class="form-control" type="text" ng-model="search.$" /></p>
+      
+      <p>
+        <!-- edit button -->
+        <a class="btn btn-primary" ng-click="inEditmode=!inEditmode">
+          <i class="glyphicon glyphicon-pencil"></i>
+          <span ng-if="!inEditmode">Edit</span>
+          <span ng-if="inEditmode">Back to read mode</span>
+        </a>
+        
+        <!-- export button -->
+        <button class="btn btn-primary" ng-csv="getOrderedData()"  csv-header="getCsvTitles()" filename="test.csv" ng-show="isTooBig()">
+          <i class="glyphicon glyphicon-export"></i>
+          <span>Export</span>
+        </button>
+        
+        <!-- fullscreen button -->
+        <a class="btn btn-primary" ng-click="fs=!fs">
+          <i class="glyphicon glyphicon-fullscreen"></i>
+          <span ng-if="!fs">Fullscreen</span>
+          <span ng-if="fs">Close Fullscreen</span>
+        </a>
+      </p>
+      
+      <!-- table -->
+      <table ng-cloak ng-table="tableParams" class="table" export-csv="csv">
+        <!-- header -->
+        <thead ng-init="titlestmp={}">
+        
             <tr ng-if="!titlestmp.$edit">
-              <th>
+              <th ng-if="inEditmode">
                   <button href="" class="btn btn-default btn-sm" title="Titles" ng-click="titlestmp.$edit = true;titlestmp.data = getTmpData(titles)"><span class="glyphicon glyphicon-pencil"></span></button>
               </th>
               <th ng-repeat="title in titles">
@@ -26,9 +59,11 @@
             </tr>
 
         </thead>
+        <!-- tbody -->
         <tbody>
-            <tr ng-repeat="(key,row) in  $data|filter:search.$" ng-init="tmprow={ data:getTmpData(row) }">
-              <td data-title="'Actions'" width="50">
+            <!-- lines -->
+            <tr ng-repeat="(key,row) in  $data" ng-init="tmprow={ data:getTmpData(row) }">
+              <td data-title="'Actions'" width="50" ng-if="inEditmode">
                   <a ng-if="!tmprow.$edit" href="" class="btn btn-default btn-sm" title="row" ng-click="tmprow.$edit = true;"><span class="glyphicon glyphicon-pencil"></span></a>
                   <a ng-if="tmprow.$edit" href="" class="btn btn-primary btn-sm" title="row" ng-click="tmprow.$edit = false;$data[key]=tmprow.data;saveData($data);">Save</a>
                   <button ng-if="tmprow.$edit" ng-click="tmprow.$edit = false;tmprow.data=$data[key];" type="button" class="btn">Cancel</button>

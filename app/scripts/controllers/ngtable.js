@@ -1,17 +1,39 @@
 'use strict';
 
 angular.module('newChartEditorApp')
-  .controller('NgTableCtrl', ['$scope', '$routeParams', '$localStorage','ngTableParams', '$filter',
-   function($scope, $routeParams, $localStorage, ngTableParams, $filter) {
+  .controller('NgTableCtrl', ['$scope', '$routeParams', '$localStorage','ngTableParams', '$filter', 'Fullscreen', 
+   function($scope, $routeParams, $localStorage, ngTableParams, $filter, Fullscreen) {
+    
+    var orderedData = [];
+    var data = [];
 
     var getData =function(){
-      return $scope.data||[];
+      return data||[];
     };
+
+    $scope.getOrderedData = function(test){
+      return orderedData;
+    }
+
+    $scope.getCsvTitles = function(){
+      return $scope.titles.map(function(d){ return d.title });      
+    }
+    
+    $scope.isTooBig = function(){
+      return orderedData.length <= 3000;
+    }
 
     $scope.getTmpData = function(data){
       return angular.copy(data);
     };
 
+    $scope.goFullscreen = function (id) {
+      console.log("ingofullscreen")
+      if (Fullscreen.isEnabled())
+         Fullscreen.cancel();
+      else
+         Fullscreen.enable( document.getElementById(id) )
+    }
 
     $scope.reload = function(){
       var dataset = $scope.$storage.datasets[$scope.datasetId];
@@ -22,15 +44,15 @@ angular.module('newChartEditorApp')
       }
     };
 
-    $scope.saveTitles = function(titles){
-      $scope.titles = titles;
-      $scope.$storage.datasets[$scope.datasetId].titles = titles;
-      //$scope.$apply()
-    };
-
     $scope.saveData = function(data){
       $scope.$storage.datasets[$scope.datasetId].data = data;
     }
+
+    $scope.saveTitles = function(titles){
+      $scope.titles = titles;
+      $scope.$storage.datasets[$scope.datasetId].titles = titles;
+    };
+
 
     $scope.datasetId = $routeParams.datasetId;
     $scope.$storage = $localStorage.$default({ datasets: {} });
@@ -43,13 +65,12 @@ angular.module('newChartEditorApp')
         total: function() { return getData().length; }, // length of data
         getData: function($defer, params) {
           var data = getData()
-          var filteredata = $filter('filter')( getData(), $scope.search);
-          var orderedData = filteredata;
-          console.log(params.sorting())
+          var filteredata = ($scope.search && $scope.search.$.length>2) ? $filter('filter')( data, $scope.search) : data;
+          orderedData = filteredata;
           /**params.sorting() ?
                               $filter('orderBy')(filteredData, params.orderBy()) :
                               filteredData;**/
-          params.total(orderedData.length);
+          params.total(filteredata.length);
           $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         },
       });
@@ -60,16 +81,14 @@ angular.module('newChartEditorApp')
     
       if (typeof(dataset) !== 'undefined') {
         $scope.data = dataset.data;
+        var data = angular.copy($scope.data);
         $scope.titles = dataset.titles;
       }
     }
     
     $scope.$watch("search.$", function () {
-
-      //console.log($scope.tableParams.settings.scope())
       if($scope.search)
         $scope.tableParams.reload();
-      //$scope.tableParams.page(1);
     });
 
   }]);

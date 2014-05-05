@@ -146,7 +146,7 @@ body {
     vertical-align: bottom;
     border-bottom: 3px solid #dddddd;
     font-size:1.1em;
-    min-width: 100px;
+    min-width: 50px;
     padding-top:2px;
     padding-bottom: 2px;
     //text-shadow: 1px 1px 1px #fff; 
@@ -155,7 +155,12 @@ body {
     background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
 }
 
+.ng-table > thead input{
+  min-width: 100px;
+}
+
 .ng-table > tbody > tr > td{
+    font-size:12px;
     padding-top:0;
     padding-bottom: 3px;
     vertical-align: middle;
@@ -220,17 +225,23 @@ body {
 }
 
 div[ng-view].ng-enter {
-    -webkit-animation: fadeInRight 0.8s;
-    animation: fadeInRight 0.8s;
-}
-
-div[ng-view].ng-enter {
-    -webkit-animation: fadeInRight 0.8s;
-    animation: fadeInRight 0.8s;
+    -webkit-animation: fadeInRight 0.1s;
+    animation: fadeInRight 0.1s;
 }
 
 .chart {
     float:left;
     width: 100%;
     height:400px;
+}
+
+.ac-legend{
+  text-align: left;
+}
+
+#dataset_tableview{
+  overflow:auto;
+  width:100%;
+  height:100%;
+  background-color:white;
 }
