@@ -8,55 +8,36 @@ angular.module('newChartEditorApp')
         $scope.$storage = $localStorage.$default({ datasets: {} });
         $scope.data = [];
         $scope.titles = [];
+
         $scope.computeData = function(){
-            $scope.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
-            var lines = $scope.data.map(function(element){ return element.join('\t'); });
-            var text = lines.join('\n');
-            $scope.dataFromCopy = text;
-          };
-
-        if($scope.datasetId){
-          var dataset = $scope.$storage.datasets[$scope.datasetId];
-          if (typeof(dataset) !== 'undefined') {
-            $scope.data = dataset.data;
-            $scope.datasetTitle = dataset.title || '';
             $timeout(function(){
-              $scope.titles = dataset.titles;}
-            , 200);
-
-
-            
-            //$scope.computeData();
-          }
-        }
+                $scope.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
+                var lines = $scope.data.map(function(element){ return element.join('\t'); });
+                var text = lines.join('\n');
+                $scope.dataFromCopy = text;}
+            , 1000);
+        };
 
         $scope.onFileSelect = function($files) {
-            //usSpinnerService.spin('spinner-1');
-            //$files: an array of files selected, each file has name, size, and type.
-            $scope.parseFile($files[0]);
-          };
-
+            parseFile($files[0]);
+        };
 
         $scope.getFormatTitles = function(currentTitles, data){
           var titles = [];
 
           for (var i = 0; i < data[0].length; i++) {
             var title = {};
-            if(typeof currentTitles[i] === "undefined"){
-              title = { title:"col"+i, field:"col"+i };
-            }
-            else {
-              title = (typeof currentTitles[i].title !== "undefined") ? currentTitles[i] : { title: currentTitles[i], field: "col" + i};
-            }
-              titles.push(title);
+            if(angular.isDefined(currentTitles[i]))
+              title = { title:"col"+i, field:"col"+i, index: i };
+            else
+              title = (!angular.isDefined(currentTitles[i].title)) ? currentTitles[i] : { title: currentTitles[i], field: "col" + i, index: i};
+            titles.push(title);
           }
           return titles;
         };
-   
 
-        $scope.parseFile =function(file){
-
-            if (typeof file !== 'undefined') {
+        var parseFile = function(file){
+            if (angular.isDefined(file)) {
               var reader = new FileReader();
               reader.onload = function(e) {
                     var result = e.target.result;
@@ -66,16 +47,17 @@ angular.module('newChartEditorApp')
               reader.readAsText(file);
             }
             else{
-              alert('error');
+              alert('error: file not found');
             }
+
             return false;
-          };
+        };
 
         $scope.saveData = function(){
-          var isNew = (typeof($scope.datasetId) === 'undefined');
-          if (isNew === true) {
+          var isNew = angular.isDefined($scope.datasetId);
+          
+          if (isNew === true)
             $scope.datasetId = removeAccents($scope.datasetTitle);
-          }
 
           var data = $scope.data;
           var titles = $scope.titles;
@@ -107,14 +89,23 @@ angular.module('newChartEditorApp')
             $scope.computeData();
             angular.element("#dataset_tableview").scope().reload();
           }
-          //usSpinnerService.stop('spinner-1')
-
         };
 
         $scope.deleteData = function(){
             delete $localStorage.datasets[$scope.datasetId];
             $location.path('/');
           };
+
+        if($scope.datasetId){
+          var dataset = $scope.$storage.datasets[$scope.datasetId];
+          if (typeof(dataset) !== 'undefined') {
+            $scope.data = dataset.data;
+            $scope.datasetTitle = dataset.title || '';
+            $timeout(function(){
+              $scope.titles = dataset.titles;}
+            , 200);
+          }
+        }
       }]);
 
 

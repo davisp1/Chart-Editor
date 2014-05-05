@@ -1,5 +1,6 @@
 <div id="test">
 <tabset class="content">
+    <!-- first tab : form-->
     <tab heading="Form">
       <div id="new_data_json" ng-controller="DataSetEditCtrl">
         <form role="form"
@@ -12,13 +13,13 @@
           </div>
 
           <div class="panel-group" id="new_data" style="cursor:pointer;" ng-init="showdata=false;">
-            <h3 ng-click="showdata=!showdata">Data
+            <h3 ng-click="showdata=!showdata;computeData();">Data
               <button type="button" class="btn btn-default btn-xs" style="border:0;" >
                 <span ng-if="showdata === true" class="glyphicon glyphicon-chevron-up"></span>
                 <span ng-if="showdata === false" class="glyphicon glyphicon-chevron-down"></span>
               </button>
             </h3>
-            <div class="panel panel-default dn-fade-up" ng-show="showdata">
+            <div class="panel panel-default dn-fade-up" ng-if="showdata">
               <div class="panel-heading">
                   <input type="radio" name="source_type" value="json" checked ng-model="checkModel"> JSON
                   <input type="radio" name="source_type" value="csv" ng-model="checkModel"> Csv
@@ -26,23 +27,23 @@
               </div>
                 <div class="panel-body">
 
-                  <div class="form-group json" style="height:auto" ng-show="checkModel === 'json'" ng-cloak>
+                  <div class="form-group json" style="height:auto" ng-if="checkModel === 'json'" ng-cloak>
                     <label for="dataTextarea">JSON</label>
-                    <textarea class="form-control" rows="15" id="dataTextarea" ng-model="jsonDataAsText" placeholder="Enter JSON"></textarea>
+                    <textarea class="form-control" rows="15" id="dataTextarea" ng-model="jsonDataAsText" placeholder="Enter JSON" />
                     <p class="help-block">format : '[ [ 'value1', 'value2' ]]'</p>
                   </div>
 
-                  <div class="form-group csv" style="height:auto" ng-show="checkModel === 'csv'">
+                  <div class="form-group csv" style="height:auto" ng-if="checkModel === 'csv'">
                     <label for="dataCsv">Csv</label>
                     <br/>
                     <input type="checkbox" id="isdataCopy" ng-model="hasTitles"/> first line is colunm titles?
-                    <input type="file" class="form-control" id="dataCsv" ng-file-select="onFileSelect($files)"></input>
+                    <input type="file" class="form-control" id="dataCsv" ng-file-select="onFileSelect($files)" />
                     <p class="help-block" >Upload your csv file.</p>
                   </div>
 
-                  <div class="form-group copy" style="height:auto" ng-show="checkModel === 'copy'">
+                  <div class="form-group copy" style="height:auto" ng-if="checkModel === 'copy'">
                     <label for="dataCopy">Copy</label>
-                    <textarea class="form-control" rows="15" id="dataCopy" placeholder="Copy/Paste you table">{{dataFromCopy}}</textarea>
+                    <textarea class="form-control" rows="15" id="dataCopy" placeholder="Copy/Paste you table" ng-model="dataFromCopy" />
                   </div> 
 
               </div>
@@ -50,7 +51,7 @@
           </div>
           <div class="form-group" style="height:auto">
             <h3>Columns</h3>
-            <span ng-repeat="(k,v) in titles" style="display:block;">
+            <span ng-repeat="(k,v) in titles" class="fadeIn" style="display:block;">
               <input type="text" class="form-control" style="width:200px;display:inline;" ng-model="v.title"></input>
               <span style="padding-left:10px;">first line : <i>{{data[0][k]}}</i></span>
             </span>
@@ -62,14 +63,16 @@
         </form>
       </div>
     </tab>
+    
+    <!-- second tab : table -->
     <tab heading="Table" ng-init="isCliked=false" ng-click="isClicked=true">
       <tab-heading>
         <span ng-click = "goNext('/charts')">Table</span>
       </tab-heading>
       <div ng-if="data && isClicked">
-        {{test}}
         <div ng-include="'views/ngtable.html'"></div>
       </div>
     </tab>
+
 </tabset>
 </div>
