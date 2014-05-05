@@ -389,7 +389,7 @@ app.factory('ngTableParams', ['$q', '$log', function ($q, $log) {
             $log.debug && $log.debug('ngTable: reload data');
             $defer.promise.then(function(data) {
                 settings.$loading = false;
-                $log.debug && $log.debug('ngTable: current scope', settings.$scope.obj);
+                $log.debug && $log.debug('ngTable: current scope', settings.$scope);
                 if (settings.groupBy) {
                     self.data = settings.$scope.$groups = data;
                 } else {
@@ -445,17 +445,13 @@ app.factory('ngTableParams', ['$q', '$log', function ($q, $log) {
  */
 var ngTableController = ['$scope', 'ngTableParams', '$q', function($scope, ngTableParams, $q) {
     $scope.$loading = false;
-    //onsole.log("bilbo");
-    //console.log($scope);
+
     if (!$scope.params) {
         $scope.params = new ngTableParams();
     }
     $scope.params.settings().$scope = $scope;
 
     $scope.$watch('params.$params', function(params) {
-        console.log("reload");
-        console.log($scope);
-
         $scope.params.settings().$scope = $scope;
         $scope.params.reload();
     }, true);
@@ -489,8 +485,8 @@ var ngTableController = ['$scope', 'ngTableParams', '$q', function($scope, ngTab
  * @description
  * Directive that instantiates {@link ngTable.directive:ngTable.ngTableController ngTableController}.
  */
-app.directive('ngTable', ['$compile', '$q', '$parse','$log',
-    function ($compile, $q, $parse, $log) {
+app.directive('ngTable', ['$compile', '$q', '$parse',
+    function ($compile, $q, $parse) {
         'use strict';
 
         return {
@@ -499,10 +495,11 @@ app.directive('ngTable', ['$compile', '$q', '$parse','$log',
             scope: true,
             controller: ngTableController,
             compile: function (element) {
-                $log.debug && $log.debug('this', angular.element(element));
                 var columns = [], i = 0, row = null;
+
                 // custom header
                 var thead = element.find('thead');
+
                 // IE 8 fix :not(.ng-table-group) selector
                 angular.forEach(angular.element(element.find('tr')), function(tr) {
                     tr = angular.element(tr);
@@ -520,13 +517,11 @@ app.directive('ngTable', ['$compile', '$q', '$parse','$log',
                     }
                     var parsedAttribute = function(attr, defaultValue) {
                         return function(scope) {
-                            $log.debug && $log.debug('parsed', scope);
                             return $parse(el.attr('x-data-' + attr) || el.attr('data-' + attr) || el.attr(attr))(scope, {
                                 $columns: columns
                             }) || defaultValue;
                         };
                     };
-                    $log.debug && $log.debug('attribute', $parse(el.attr("title")));
 
                     var parsedTitle = parsedAttribute('title', ' '),
                         headerTemplateURL = parsedAttribute('header', false),
@@ -604,12 +599,9 @@ app.directive('ngTable', ['$compile', '$q', '$parse','$log',
                         };
                         var headerTemplate = thead.length > 0 ? thead : angular.element(document.createElement('thead')).attr('ng-include', 'templates.header');
                         var paginationTemplate = angular.element(document.createElement('div')).attr('ng-include', 'templates.pagination');
-                        
                         element.find('thead').remove();
                         var tbody = element.find('tbody');
                         element.prepend(headerTemplate);
-                        console.log("fksdfksdflk")
-                        //console.log(scope)
                         $compile(headerTemplate)(scope);
                         $compile(paginationTemplate)(scope);
                         element.addClass('ng-table');
