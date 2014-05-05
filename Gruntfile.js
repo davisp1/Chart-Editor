@@ -314,12 +314,12 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
-    'gh-pages': {                                                               
-	 options: {                                                              
-               base: 'dist'                                                      
-	 },                                                                      
-	src: ['**']                                                             
-     },         
+    'gh-pages': {
+	    options: {
+        base: 'dist'
+      },
+	    src: ['**']
+    },
     // Test settings
     karma: {
       unit: {
