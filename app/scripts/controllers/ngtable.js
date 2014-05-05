@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('newChartEditorApp')
-  .controller('NgTableCtrl', ['$scope', '$routeParams', '$localStorage','ngTableParams', '$filter', 'Fullscreen', 
+  .controller('NgTableCtrl', ['$scope', '$routeParams', '$localStorage','ngTableParams', '$filter', 'Fullscreen',
    function($scope, $routeParams, $localStorage, ngTableParams, $filter, Fullscreen) {
     
     var orderedData = [];
@@ -11,29 +11,30 @@ angular.module('newChartEditorApp')
       return data||[];
     };
 
-    $scope.getOrderedData = function(test){
+    $scope.getOrderedData = function(){
       return orderedData;
-    }
+    };
 
     $scope.getCsvTitles = function(){
-      return $scope.titles.map(function(d){ return d.title });      
-    }
+        return $scope.titles.map(function(d){ return d.title; });
+      };
     
     $scope.isTooBig = function(){
       return orderedData.length <= 3000;
-    }
+    };
 
     $scope.getTmpData = function(data){
       return angular.copy(data);
     };
 
     $scope.goFullscreen = function (id) {
-      console.log("ingofullscreen")
-      if (Fullscreen.isEnabled())
-         Fullscreen.cancel();
-      else
-         Fullscreen.enable( document.getElementById(id) )
-    }
+      if (Fullscreen.isEnabled()){
+        Fullscreen.cancel();
+      }
+      else{
+        Fullscreen.enable( document.getElementById(id) );
+      }
+    };
 
     $scope.reload = function(){
       var dataset = $scope.$storage.datasets[$scope.datasetId];
@@ -46,7 +47,7 @@ angular.module('newChartEditorApp')
 
     $scope.saveData = function(data){
       $scope.$storage.datasets[$scope.datasetId].data = data;
-    }
+    };
 
     $scope.saveTitles = function(titles){
       $scope.titles = titles;
@@ -64,7 +65,7 @@ angular.module('newChartEditorApp')
       }, {
         total: function() { return getData().length; }, // length of data
         getData: function($defer, params) {
-          var data = getData()
+          var data = getData();
           var filteredata = ($scope.search && $scope.search.$.length>2) ? $filter('filter')( data, $scope.search) : data;
           orderedData = filteredata;
           /**params.sorting() ?
@@ -81,14 +82,15 @@ angular.module('newChartEditorApp')
     
       if (typeof(dataset) !== 'undefined') {
         $scope.data = dataset.data;
-        var data = angular.copy($scope.data);
+        data = angular.copy($scope.data);
         $scope.titles = dataset.titles;
       }
     }
     
-    $scope.$watch("search.$", function () {
-      if($scope.search)
+    $scope.$watch('search.$', function () {
+      if($scope.search) {
         $scope.tableParams.reload();
+      }
     });
 
   }]);

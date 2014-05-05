@@ -2,72 +2,62 @@
 
 angular.module('newChartEditorApp')
   .controller('ChartCtrl', function ($scope, $routeParams, $window, $rootScope, $localStorage) {
-  	$rootScope.currentChart = $routeParams.chartId;
+
+    $rootScope.currentChart = $routeParams.chartId;
     $scope.chartId = $routeParams.chartId;
     $scope.$storage = $localStorage.$default({ charts: {} });
+    $scope.datasets = $scope.$storage.datasets;
+
     $scope.chart = [];
-    
+    $scope.series = [];
+    $scope.title = '';
+    $scope.$window = $window;
+    $scope.example = true;
+    $scope.kindCharts = ['bar', 'pie', 'line', 'area', 'point'];
+    $scope.data = [];
+    $scope.dataset = '';
+    $scope.labels = '';
+
     if($scope.chartId){
       $scope.chart = $scope.$storage.datasets[$scope.chartId];
       if (typeof($scope.chart) !== 'undefined') {
- 	  }
- 	}
+      }
+    }
+
+    $scope.$watch('dataset', function() {
+        $scope.datasetObject= $scope.dataset;
+        $scope.datasetColumns = (angular.isDefined($scope.datasetObject)) ? $scope.datasetObject.titles : [];
+        console.log($scope.datasetColumns);
+      });
     
-    $scope.data = [];
-    
-    $scope.dataset = "";
-    $scope.labels = "";
-	$scope.datasets = $scope.$storage.datasets; 
+    $scope.data1 = {
+        series: ['Sales', 'Income', 'Expense', 'Laptops', 'Keyboards'],
+        data : []
+      };
 
-  	$scope.$watch('dataset', function() {
-    	$scope.datasetObject= $scope.dataset;
-    	$scope.datasetColumns = (angular.isDefined($scope.datasetObject)) ? $scope.datasetObject.titles : [];
-    	console.log($scope.datasetColumns);
-	});
+    $scope.computeData = function(){
+        var series = [];
+        var data = [];
+        var labelColumn = $scope.labels;
+        var valueColumn = $scope.values;
+        if (angular.isDefined(labelColumn) && angular.isDefined(valueColumn)) {
+          angular.forEach($scope.dataset.data, function(value, key){
+              console.log(value + key);
+            }, data);
+        }
+        $scope.data1 = { series: series, data: data };
+      };
 
-    $scope.series = [];
-    $scope.title = "";
-    $scope.$window = $window;
-    $scope.example=true;
-    
-    $scope.kindCharts=['bar', 'pie', 'line', 'area', 'point'];
-	
-	//$scope.labels = 
-	
-	$scope.data1 = {
-		series: ['Sales', 'Income', 'Expense', 'Laptops', 'Keyboards'],
-		data : []     
-	}
+    $scope.chartType = 'bar';
 
-	$scope.computeData = function(){
-		console.log("begin");
-		var series = [];
-		var data = [];
-		var label_column = $scope.labels;
-		var value_column = $scope.values;
-		console.log(label_column);
-		console.log(value_column);
-		if (angular.isDefined(label_column) && angular.isDefined(value_column)) {
-			console.log("before looping")
-		     angular.forEach($scope.dataset.data, function(value, key){
-		       //this.push(key + ': ' + value);
-		       console.log(value);
-		     }, data);
-		}
-		$scope.data1 = { series: series, data: data }
-		console.log("end");
-	};
-
-	$scope.chartType = 'bar';
-
-	$scope.config = {
-		labels: false,
-		title : "Not Products",
-		example : $scope.example,
-		legend : {
-			display:true,
-			position:'right'
-		}
-	}
-    angular.element($window).bind('resize',function(e){ console.log("jfksldkfjsdlfksj");$scope.example=!$scope.example;$scope.config.example=$scope.example});
+    $scope.config = {
+        labels: false,
+        title : 'Not Products',
+        example : $scope.example,
+        legend : {
+            display:true,
+            position:'right'
+          }
+        };
+    angular.element($window).bind('resize',function(e){ console.log(e);$scope.example=!$scope.example;$scope.config.example=$scope.example;});
   });
