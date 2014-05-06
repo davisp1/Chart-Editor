@@ -2,18 +2,20 @@
 
 angular.module('newChartEditorApp')
   .controller('MenuCtrl', function ($scope,$rootScope,$localStorage,$location) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
 
     $scope.datasets = $localStorage.datasets;
     $scope.navType = 'pills';
 
     /** **/
     $scope.isActive = function (viewLocation) {
-        return $rootScope.currentDataset === viewLocation;
+        var paths = $location.path().split('/');
+        var id = paths[paths.length - 1];
+        return id === viewLocation;
+      };
+
+    $scope.isMenuActive = function (viewLocation) {
+        console.log($location.path().indexOf(viewLocation) > -1);
+        return $location.path().indexOf(viewLocation) > -1;
       };
 
     /** **/

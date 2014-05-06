@@ -1,8 +1,8 @@
-<div ng-controller="MenuCtrl">
+<div ng-controller="MenuCtrl" ng-init="menu = { dataset: isMenuActive('dataset'), chart: isMenuActive('chart')}">
   <tabset class="menu">
-    <tab>
+    <tab active="menu.dataset" ng-click = "goNext('/dataset')">
       <tab-heading>
-        <span ng-click = "goNext('/dataset')"><i class="glyphicon glyphicon-hdd"></i> DataSets</span>
+        <span><i class="glyphicon glyphicon-hdd"></i> DataSets</span>
       </tab-heading>
       <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
           <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
@@ -16,9 +16,9 @@
       </ul> 
       <button class="btn btn-default btn-sm" ng-click="goNext('/dataset/create')"> Create </a></button>
     </tab>
-    <tab>
-      <tab-heading>
-        <span ng-click = "goNext('/charts')"><i class="glyphicon glyphicon-stats"></i> Charts</span>
+    <tab active="menu.chart" ng-click = "goNext('/chart')">
+      <tab-heading >
+        <span><i class="glyphicon glyphicon-stats"></i> Charts</span>
       </tab-heading>
       <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
           <li ng-repeat="chart in charts" ng-click="setActive(chart.id)" ng-class="{ active: isActive(chart.id) }" data-id="{{chart.id}}">
