@@ -24,6 +24,10 @@ angular.module('newChartEditorApp', [
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/chart', {
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl'
+      })
       .when('/dataset/create', {
         templateUrl: 'views/dataset.html',
         controller: 'DataSetEditCtrl'
