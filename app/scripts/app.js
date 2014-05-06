@@ -12,7 +12,8 @@ angular.module('newChartEditorApp', [
   'ngAnimate-animate.css', // animate.css
   'angularCharts', // D3 Charts
   'ngCsv',
-  'FBAngular'
+  'FBAngular',
+  'colorpicker.module'
 ])
   .config(function ($routeProvider) {
     $routeProvider
