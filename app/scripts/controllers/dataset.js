@@ -18,8 +18,8 @@ function normalize(strAccents) {
 }
 
 angular.module('newChartEditorApp')
-   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile', '$timeout',
-   function($scope, $routeParams, $rootScope, $upload, $localStorage, $location, ngTableParams, $filter, $compile, $timeout) {
+   .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$localStorage','$location', 'ngTableParams', '$filter', '$timeout',
+   function($scope, $routeParams, $rootScope, $localStorage, $location, ngTableParams, $filter, $timeout) {
         $rootScope.currentDataset = $routeParams.datasetId;
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
@@ -45,10 +45,10 @@ angular.module('newChartEditorApp')
           for (var i = 0; i < data[0].length; i++) {
             var title;
             if(angular.isDefined(currentTitles[i])){
-              title = { title: 'col' + i, field: 'col' + i, index: i };
+              title = { field: 'col' + i, index: i, title: 'col' + i};
             }
             else{
-              title = (!angular.isDefined(currentTitles[i].title)) ? currentTitles[i] : { title: currentTitles[i], field: 'col' + i, index: i};
+              title = (!angular.isDefined(currentTitles[i].title)) ? currentTitles[i] : { field: 'col' + i, index: i, title: currentTitles[i]};
             }
             titles.push(title);
           }
@@ -73,10 +73,9 @@ angular.module('newChartEditorApp')
           };
 
         $scope.saveData = function(){
-          var isNew = angular.isDefined($scope.datasetId);
-          
+          var isNew = !angular.isDefined($scope.datasetId);
           if (isNew === true){
-            $scope.datasetId = removeAccents($scope.datasetTitle);
+            $scope.datasetId = normalize($scope.datasetTitle);
           }
           var data = $scope.data;
           var titles = $scope.titles;
@@ -97,14 +96,17 @@ angular.module('newChartEditorApp')
             titles = $scope.getFormatTitles(firstrow, data);
           }
 
-          $scope.$storage.datasets[$scope.datasetId] = { 'title' : $scope.datasetTitle, 'id' : $scope.datasetId, 'data' : data, 'titles' : titles };
+          $scope.$storage.datasets[$scope.datasetId] = { 'data' : data,
+                                                         'id' : $scope.datasetId,
+                                                         'title' : $scope.datasetTitle,
+                                                         'titles' : titles };
           $scope.data = data;
           $scope.titles = titles;
 
           if (isNew === true) {
             $location.path('/dataset/edit/' + $scope.datasetId);
           }
-          else if($scope.data.length>0 && angular.element('#dataset_tableview').scope()){
+          else if($scope.data.length>0){
             $scope.computeData();
             angular.element('#dataset_tableview').scope().reload();
           }
