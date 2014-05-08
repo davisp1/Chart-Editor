@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('newChartEditorApp')
-  .controller('ChartCtrl', function ($scope, $routeParams, $rootScope, $localStorage) {
+  .controller('ChartCtrl', function ($scope, $routeParams, $rootScope, $localStorage, $location) {
 
     $rootScope.currentChart = $routeParams.chartId;
     $scope.chartId = $routeParams.chartId;
@@ -9,35 +9,39 @@ angular.module('newChartEditorApp')
     $scope.datasets = $scope.$storage.datasets;
     $scope.kindCharts = ['bar', 'pie', 'line', 'area', 'point'];
     $scope.kindLegend = ['lineEnd', 'traditional'];
-    $scope.sharedData = { 
-        dataset: '', 
-        valueColumns: [{ id: '', value: ''}], 
-        titleColumn: '', 
-        chartType: 'bar' 
-      };
 
     if($scope.chartId){
-      $scope.chart = $scope.$storage.charts[$scope.chartId];
-      if (typeof($scope.chart) !== 'undefined') {
-      }
+        var chart = $scope.$storage.charts[$scope.chartId];
+        if (angular.isDefined(chart)) {
+          $scope.sharedData = angular.copy(chart.sharedData);
+          $scope.config = angular.copy(chart.config);
+        }
     }
+    else{
+        $scope.sharedData = { 
+            dataset: '', 
+            valueColumns: [{ id: '', value: ''}], 
+            titleColumn: '', 
+            chartType: 'bar' 
+          };
 
-    $scope.config = {
-        title : 'New Chart',
-        tooltips: true,
-        labels : false,
-        mouseover: function() {},
-        mouseout: function() {},
-        click: function() {},
-        legend: {
-          display: true,
-          //could be 'left, right'
-          position: 'right'
-        },
-        colors: ['steelBlue', 'rgb(255,153,0)', 'rgb(220,57,18)', 'rgb(70,132,238)', 'rgb(73,66,204)', 'rgb(0,128,0)'],
-        innerRadius: 0, // Only on pie Charts
-        lineLegend: 'lineEnd', // Only on line Charts
-    };
+        $scope.config = {
+            title : 'New Chart',
+            tooltips: true,
+            labels : false,
+            mouseover: function() {},
+            mouseout: function() {},
+            click: function() {},
+            legend: {
+              display: true,
+              //could be 'left, right'
+              position: 'right'
+            },
+            colors: ['steelBlue', 'rgb(255,153,0)', 'rgb(220,57,18)', 'rgb(70,132,238)', 'rgb(73,66,204)', 'rgb(0,128,0)'],
+            innerRadius: 0, // Only on pie Charts
+            lineLegend: 'lineEnd', // Only on line Charts
+        };
+    }
 
     $scope.data1 = {
         series: [],
@@ -53,19 +57,26 @@ angular.module('newChartEditorApp')
 
         var labelColumn = $scope.sharedData.titleColumn;
         var valueColumns = $scope.sharedData.valueColumns;
-        var titles = $scope.sharedData.dataset.titles;
+        var dataset = $scope.datasets[$scope.sharedData.dataset];
 
-        if (angular.isDefined(labelColumn) && valueColumns.length > 0) {
+        if (angular.isDefined(dataset) && angular.isDefined(labelColumn) && valueColumns.length > 0) {
+
+          var titles = dataset.titles;
+          var titlesDict = {};
+          for (var i = 0; i < titles.length; i++) {
+            titlesDict[titles[i].field] = titles[i];
+          }
+
+          labelColumn = titlesDict[labelColumn].index;
 
           for (var i = 0; i < valueColumns.length; i++) {
             var column = valueColumns[i];
+            var title = titlesDict[column.id];
             series.push(column.value);
-            seriesId.push(titles.indexOf(column.id));
+            seriesId.push(title.index);
           }
 
-          labelColumn = titles.indexOf(labelColumn);
-
-          angular.forEach($scope.sharedData.dataset.data, function(value){
+          angular.forEach(dataset.data, function(value){
               var y = [];
               for (var i = 0; i < seriesId.length; i++) {
                 console.log(parseFloat(value[seriesId[i]]));
@@ -78,7 +89,28 @@ angular.module('newChartEditorApp')
         $scope.data1 = { series: series, data: data };
       };
 
+    /**
+    * Save data function
+    */
     $scope.saveData = function(){
-      $scope.$storage.charts[$scope.chartId] = { config: $scope.config, labels: $scope.labels, values: $scope.values };
+      
+      if (!angular.isDefined($scope.chartId)){
+          $scope.chartId = normalize($scope.config.title);
+      }
+
+      $scope.$storage.charts[$scope.chartId] = {  
+            id: $scope.chartId, 
+            config: $scope.config, 
+            sharedData: $scope.sharedData
+        };
+      
+      $location.path('/chart/edit/' + $scope.chartId);
     };
+
+    $scope.deleteData = function(){
+        delete $localStorage.charts[$scope.chartId];
+        $location.path('/');
+      };
+
+    $scope.computeData();
   });
