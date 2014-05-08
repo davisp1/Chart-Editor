@@ -7,9 +7,6 @@
       <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
           <li ng-repeat="dataset in datasets" ng-click="setActive(dataset.id)" ng-class="{ active: isActive(dataset.id) }" data-id="{{dataset.id}}">
             <a href="#/dataset/edit/{{dataset.id}}">
-              <button class="btn-danger btn-xs pull-right" ng-click="deleteData(dataset.id)">
-                <span class="glyphicon glyphicon-remove"></span>
-              </button>
               <span>{{dataset.title||dataset.id}}<span>
             </a>
           </li>
@@ -21,9 +18,9 @@
         <span><i class="glyphicon glyphicon-stats"></i> Charts</span>
       </tab-heading>
       <ul class="nav nav-pills nav-stacked" data-active="{{current_dataset}}">
-          <li ng-repeat="chart in charts" ng-click="setActive(chart.id)" ng-class="{ active: isActive(chart.id) }" data-id="{{chart.id}}">
-            <a href="#/chart/edit/{{chart.id}}">
-              <span>{{chart.title||chart.id}}<span>
+          <li ng-repeat="(key, chart) in charts" ng-click="setActive(chart.id)" ng-class="{ active: isActive(chart.id) }" data-id="{{chart.id}}">
+            <a href="#/chart/edit/{{key}}">
+              <span>{{chart.config.title||chart.id}}<span>
             </a>
           </li>
       </ul> 

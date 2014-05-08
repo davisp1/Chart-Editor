@@ -4,6 +4,7 @@ angular.module('newChartEditorApp')
   .controller('MenuCtrl', function ($scope,$rootScope,$localStorage,$location) {
 
     $scope.datasets = $localStorage.datasets;
+    $scope.charts = $localStorage.charts;
     $scope.navType = 'pills';
 
     /** **/
