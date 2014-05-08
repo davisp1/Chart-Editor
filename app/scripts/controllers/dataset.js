@@ -1,22 +1,21 @@
 'use strict';
 
-function removeAccents(strAccents) {
-    strAccents = strAccents.split('');
-    var strAccentsOut = [];
-    var strAccentsLen = strAccents.length;
-    var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
-    var accentsOut = ['A','A','A','A','A','A','a','a','a','a','a','a','O','O','O','O','O','O','O','o','o','o','o','o','o','E','E','E','E','e','e','e','e','e','C','c','D','I','I','I','I','i','i','i','i','U','U','U','U','u','u','u','u','N','n','S','s','Y','y','y','Z','z'];
-    for (var y = 0; y < strAccentsLen; y++) {
-      if(accents.indexOf(strAccents[y]) !== -1) {
-        strAccentsOut[y] = accentsOut[accents.indexOf(strAccents[y])];
-      }
-      else{
-        strAccentsOut[y] = strAccents[y];
-      }
-    }
-    strAccentsOut = strAccentsOut.join('');
-    return strAccentsOut;
-  }
+function normalize(strAccents) {
+      var r = strAccents.toLowerCase();
+      r = r.replace(new RegExp('\\s', 'g'),'');
+      r = r.replace(new RegExp('[àáâãäå]', 'g'),'a');
+      r = r.replace(new RegExp('æ', 'g'),'ae');
+      r = r.replace(new RegExp('ç', 'g'),'c');
+      r = r.replace(new RegExp('[èéêë]', 'g'),'e');
+      r = r.replace(new RegExp('[ìíîï]', 'g'),'i');
+      r = r.replace(new RegExp('ñ', 'g'),'n');
+      r = r.replace(new RegExp('[òóôõö]', 'g'),'o');
+      r = r.replace(new RegExp('œ', 'g'),'oe');
+      r = r.replace(new RegExp('[ùúûü]', 'g'),'u');
+      r = r.replace(new RegExp('[ýÿ]', 'g'),'y');
+      r = r.replace(new RegExp('\\W', 'g'),'');
+      return r;
+}
 
 angular.module('newChartEditorApp')
    .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$upload', '$localStorage','$location', 'ngTableParams', '$filter', '$compile', '$timeout',
@@ -125,15 +124,3 @@ angular.module('newChartEditorApp')
           }
         }
       }]);
-
-/**
-function hasClass(element, classNameToTestFor) {
-    var classNames = element.className.split(' ');
-    for (var i = 0; i < classNames.length; i++) {
-      if (classNames[i].toLowerCase() === classNameToTestFor.toLowerCase()) {
-        return true;
-      }
-    }
-    return false;
-  }
-**/
