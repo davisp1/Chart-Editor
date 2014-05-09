@@ -41,7 +41,7 @@ angular.module('newChartEditorApp', [
         templateUrl: 'views/chart.html',
         controller: 'ChartCtrl'
       })
-      .when('/chart/edit/:charttId', {
+      .when('/chart/edit/:chartId', {
         templateUrl: 'views/chart.html',
         controller: 'ChartCtrl'
       })
