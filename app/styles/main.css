@@ -224,9 +224,14 @@ body {
   opacity: 0.96;
 }
 
-div[ng-view].ng-enter {
-  -webkit-animation: fadeInRight 0.1s;
-  animation: fadeInRight 0.1s;
+div[ng-view].ng-enter, .tab-pane.ng-enter {
+  -webkit-animation: fadeInRight 1s;
+  animation: fadeInRight 1s;
+}
+
+.data-source.ng-hide-remove {
+  -webkit-animation: fadeInDown 0.6s;
+  animation: fadeInDown 0.6s;
 }
 
 .chart {
