@@ -38,8 +38,9 @@ angular.module('newChartEditorApp')
 
     $scope.reload = function(){
       var dataset = $scope.$storage.datasets[$scope.datasetId];
-      if (typeof(dataset) !== 'undefined') {
+      if (angular.isDefined(dataset)) {
         $scope.data = dataset.data;
+        data = $scope.data;
         $scope.titles = dataset.titles;
         $scope.tableParams.reload();
       }
