@@ -20,7 +20,7 @@
         </a>
         
         <!-- export button -->
-        <button class="btn btn-primary" ng-csv="getOrderedData()"  csv-header="getCsvTitles()" filename="test.csv" ng-show="isTooBig()">
+        <button class="btn btn-primary" ng-csv="getOrderedData()"  csv-header="getCsvTitles()" filename="{{datasetId}}.csv" ng-show="isTooBig()">
           <i class="glyphicon glyphicon-export"></i>
           <span>Export</span>
         </button>
