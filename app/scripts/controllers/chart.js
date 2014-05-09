@@ -79,12 +79,12 @@ angular.module('newChartEditorApp')
           angular.forEach(dataset.data, function(value){
               var y = [];
               for (var i = 0; i < seriesId.length; i++) {
-                console.log(parseFloat(value[seriesId[i]]));
-                y.push(parseFloat(value[seriesId[i]]));
+                var yTmp = parseFloat(value[seriesId[i]]);
+                yTmp = (!isNaN(yTmp)) ? yTmp : 0.0;
+                y.push(yTmp);
               }
               this.push({ x: value[labelColumn]||0, y: y});
             }, data);
-
         }
         $scope.data1 = { series: series, data: data };
       };
