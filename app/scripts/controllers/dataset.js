@@ -20,48 +20,104 @@ function normalize(strAccents) {
 angular.module('newChartEditorApp')
    .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$localStorage','$location', 'ngTableParams', '$filter', '$timeout',
    function($scope, $routeParams, $rootScope, $localStorage, $location, ngTableParams, $filter, $timeout) {
+        
         $rootScope.currentDataset = $routeParams.datasetId;
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
         $scope.data = [];
-        $scope.titles = [];
-
+        $scope.sharedData = {
+                title: '',
+                datacsv: '',
+                titles: ''
+        };
+        var inEditMode = angular.isDefined($scope.datasetId);
+        /** Functions linked to the scope **/
         $scope.computeData = function(){
             $timeout(function(){
-                $scope.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
+                $scope.sharedData.jsonDataAsText = JSON.stringify($scope.data,null,'\t');
                 var lines = $scope.data.map(function(element){ return element.join('\t'); });
                 var text = lines.join('\n');
-                $scope.dataFromCopy = text;
+                $scope.sharedData.dataFromCopy = text;
               }, 1000);
           };
 
-        $scope.onFileSelect = function($files) {
-            parseFile($files[0]);
+        $scope.deleteData = function(){
+            delete $localStorage.datasets[$scope.datasetId];
+            $location.path('/');
           };
 
-        $scope.getFormatTitles = function(currentTitles, data){
+        $scope.onFileSelect = function($files,sharedData) {
+            $scope.parseFile($files[0],sharedData);
+          };
+
+        $scope.saveData = function(){
+            if (!angular.isDefined($scope.datasetId)){
+              $scope.datasetId = normalize($scope.sharedData.title);
+            }
+            var data = $scope.data;
+            var titles = $scope.sharedData.titles;
+
+            if($scope.sharedData.source === 'json') {
+              try {
+                  data = JSON.parse($scope.sharedData.jsonDataAsText);
+                  titles = getFormatTitles([], data);
+                }
+              catch(e){
+                  console.log('error ' + e);
+                  return false;
+                }
+            }
+            else if($scope.sharedData.source === 'csv') {
+              data = $scope.sharedData.datacsv;
+              var firstrow = ($scope.sharedData.hasTitles) ? data.shift() : [];
+              titles = getFormatTitles(firstrow, data);
+            }
+
+            $scope.$storage.datasets[$scope.datasetId] = { 'data' : data,
+                                                           'id' : $scope.datasetId,
+                                                           'title' : $scope.sharedData.title,
+                                                           'titles' : titles };
+            $scope.data = data;
+            $scope.sharedData.titles = titles;
+
+            if (!inEditMode) {
+              $location.path('/dataset/edit/' + $scope.datasetId);
+            }
+            else if($scope.data.length>0){
+              $scope.computeData();
+              var datasetScope = angular.element('#dataset_tableview').scope();
+              if (angular.isDefined(datasetScope))
+              {
+                datasetScope.reload();
+              }
+            }
+        };
+
+
+        /** external functions **/
+        var getFormatTitles = function(currentTitles, data){
           var titles = [];
 
           for (var i = 0; i < data[0].length; i++) {
             var title;
-            if(angular.isDefined(currentTitles[i])){
+            if(!angular.isDefined(currentTitles[i])){
               title = { field: 'col' + i, index: i, title: 'col' + i};
             }
             else{
-              title = (!angular.isDefined(currentTitles[i].title)) ? currentTitles[i] : { field: 'col' + i, index: i, title: currentTitles[i]};
+              title = (angular.isDefined(currentTitles[i].title)) ? currentTitles[i] : { field: 'col' + i, index: i, title: currentTitles[i]};
             }
             titles.push(title);
           }
           return titles;
         };
 
-        var parseFile = function(file){
+        $scope.parseFile = function(file){
             if (angular.isDefined(file)) {
               var reader = new FileReader();
               reader.onload = function(e) {
                     var result = e.target.result;
                     var data = d3.csv.parseRows(result.replace(/\s*;/g, ','));
-                    $scope.datacsv = data;
+                    $scope.sharedData.datacsv = data;
                   };
               reader.readAsText(file);
             }
@@ -72,57 +128,12 @@ angular.module('newChartEditorApp')
             return false;
           };
 
-        $scope.saveData = function(){
-          var isNew = !angular.isDefined($scope.datasetId);
-          if (isNew === true){
-            $scope.datasetId = normalize($scope.datasetTitle);
-          }
-          var data = $scope.data;
-          var titles = $scope.titles;
-
-          if($scope.checkModel === 'json') {
-            try {
-                data = jQuery.parseJSON($scope.jsonDataAsText);
-                titles = $scope.getFormatTitles([], data);
-              }
-            catch(e){
-                console.log('error ' + e);
-                return false;
-              }
-          }
-          else if($scope.checkModel === 'csv') {
-            data = $scope.datacsv;
-            var firstrow = ($scope.hasTitles) ? data.shift() : [];
-            titles = $scope.getFormatTitles(firstrow, data);
-          }
-
-          $scope.$storage.datasets[$scope.datasetId] = { 'data' : data,
-                                                         'id' : $scope.datasetId,
-                                                         'title' : $scope.datasetTitle,
-                                                         'titles' : titles };
-          $scope.data = data;
-          $scope.titles = titles;
-
-          if (isNew === true) {
-            $location.path('/dataset/edit/' + $scope.datasetId);
-          }
-          else if($scope.data.length>0){
-            $scope.computeData();
-            angular.element('#dataset_tableview').scope().reload();
-          }
-        };
-
-        $scope.deleteData = function(){
-            delete $localStorage.datasets[$scope.datasetId];
-            $location.path('/');
-          };
-
         if($scope.datasetId){
-          var dataset = $scope.$storage.datasets[$scope.datasetId];
-          if (typeof(dataset) !== 'undefined') {
+          var dataset = angular.copy($scope.$storage.datasets[$scope.datasetId]);
+          if (angular.isDefined(dataset)) {
             $scope.data = dataset.data;
-            $scope.datasetTitle = dataset.title || '';
-            $timeout(function(){$scope.titles = dataset.titles;}, 200);
+            $scope.sharedData.title = dataset.title || '';
+            $timeout(function(){$scope.sharedData.titles = dataset.titles;}, 200);
           }
         }
       }]);
