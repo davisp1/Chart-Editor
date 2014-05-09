@@ -15,7 +15,7 @@ function normalize(strAccents) {
       r = r.replace(new RegExp('[ýÿ]', 'g'),'y');
       r = r.replace(new RegExp('\\W', 'g'),'');
       return r;
-}
+    }
 
 angular.module('newChartEditorApp')
    .controller('DataSetEditCtrl', ['$scope', '$routeParams', '$rootScope', '$localStorage','$location', 'ngTableParams', '$filter', '$timeout',
@@ -25,12 +25,15 @@ angular.module('newChartEditorApp')
         $scope.datasetId = $routeParams.datasetId;
         $scope.$storage = $localStorage.$default({ datasets: {} });
         $scope.data = [];
+
         $scope.sharedData = {
-                title: '',
-                datacsv: '',
-                titles: ''
+          title: '',
+          datacsv: '',
+          titles: ''
         };
+
         var inEditMode = angular.isDefined($scope.datasetId);
+
         /** Functions linked to the scope **/
         $scope.computeData = function(){
             $timeout(function(){
@@ -91,7 +94,7 @@ angular.module('newChartEditorApp')
                 datasetScope.reload();
               }
             }
-        };
+          };
 
 
         /** external functions **/

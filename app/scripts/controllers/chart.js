@@ -11,36 +11,36 @@ angular.module('newChartEditorApp')
     $scope.kindLegend = ['lineEnd', 'traditional'];
 
     if($scope.chartId){
-        var chart = $scope.$storage.charts[$scope.chartId];
-        if (angular.isDefined(chart)) {
-          $scope.sharedData = angular.copy(chart.sharedData);
-          $scope.config = angular.copy(chart.config);
-        }
+      var chart = $scope.$storage.charts[$scope.chartId];
+      if (angular.isDefined(chart)) {
+        $scope.sharedData = angular.copy(chart.sharedData);
+        $scope.config = angular.copy(chart.config);
+      }
     }
     else{
-        $scope.sharedData = { 
-            dataset: '', 
-            valueColumns: [{ id: '', value: ''}], 
-            titleColumn: '', 
-            chartType: 'bar' 
-          };
+      $scope.sharedData = {
+        dataset: '',
+        valueColumns: [{ id: '', value: ''}],
+        titleColumn: '',
+        chartType: 'bar'
+      };
 
-        $scope.config = {
-            title : 'New Chart',
-            tooltips: true,
-            labels : false,
-            mouseover: function() {},
-            mouseout: function() {},
-            click: function() {},
-            legend: {
-              display: true,
-              //could be 'left, right'
-              position: 'right'
-            },
-            colors: ['steelBlue', 'rgb(255,153,0)', 'rgb(220,57,18)', 'rgb(70,132,238)', 'rgb(73,66,204)', 'rgb(0,128,0)'],
-            innerRadius: 0, // Only on pie Charts
-            lineLegend: 'lineEnd', // Only on line Charts
-        };
+      $scope.config = {
+        title : 'New Chart',
+        tooltips: true,
+        labels : false,
+        mouseover: function() {},
+        mouseout: function() {},
+        click: function() {},
+        legend: {
+          display: true,
+          //could be 'left, right'
+          position: 'right'
+        },
+        colors: ['steelBlue', 'rgb(255,153,0)', 'rgb(220,57,18)', 'rgb(70,132,238)', 'rgb(73,66,204)', 'rgb(0,128,0)'],
+        innerRadius: 0, // Only on pie Charts
+        lineLegend: 'lineEnd', // Only on line Charts
+      };
     }
 
     $scope.data1 = {
@@ -69,8 +69,8 @@ angular.module('newChartEditorApp')
 
           labelColumn = titlesDict[labelColumn].index;
 
-          for (var i = 0; i < valueColumns.length; i++) {
-            var column = valueColumns[i];
+          for (var j = 0; j < valueColumns.length; j++) {
+            var column = valueColumns[j];
             var title = titlesDict[column.id];
             series.push(column.value);
             seriesId.push(title.index);
@@ -95,14 +95,14 @@ angular.module('newChartEditorApp')
     $scope.saveData = function(){
       
       if (!angular.isDefined($scope.chartId)){
-          $scope.chartId = normalize($scope.config.title);
+        $scope.chartId = normalize($scope.config.title);
       }
 
-      $scope.$storage.charts[$scope.chartId] = {  
-            id: $scope.chartId, 
-            config: $scope.config, 
-            sharedData: $scope.sharedData
-        };
+      $scope.$storage.charts[$scope.chartId] = {
+        id: $scope.chartId,
+        config: $scope.config,
+        sharedData: $scope.sharedData
+      };
       
       $location.path('/chart/edit/' + $scope.chartId);
     };
