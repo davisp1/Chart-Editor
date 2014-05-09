@@ -1,4 +1,4 @@
-<div ng-controller="MenuCtrl" ng-init="menu = { dataset: isMenuActive('dataset'), chart: isMenuActive('chart')}">
+<div ng-controller="MenuCtrl" ng-init="menu = { dataset: isMenuActive('dataset'), chart: isMenuActive('chart')}" ng-cloak>
   <tabset class="menu">
     <tab active="menu.dataset" ng-click = "goNext('/dataset')">
       <tab-heading>
