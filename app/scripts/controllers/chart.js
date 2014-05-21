@@ -5,7 +5,7 @@ angular.module('newChartEditorApp')
 
     $rootScope.currentChart = $routeParams.chartId;
     $scope.chartId = $routeParams.chartId;
-    $scope.$storage = $localStorage.$default({ charts: {} });
+    $scope.$storage = $localStorage.$default({ charts: {}, datasets: {} });
     $scope.datasets = $scope.$storage.datasets;
     $scope.kindCharts = ['bar', 'pie', 'line', 'area', 'point'];
     $scope.kindLegend = ['lineEnd', 'traditional'];
